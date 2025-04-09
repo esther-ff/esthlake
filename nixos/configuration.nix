@@ -12,6 +12,8 @@
       ./fstab.nix
       # Services
       ./services/services.nix
+      # Wireguard
+      ./modules/wireguard.nix
     ];
 
   nixpkgs.config.allowUnfree = true;
@@ -33,13 +35,11 @@
       if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
       then
         shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
-        echo "Forwarding to fish!"
         exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
       fi
     '';
 
     loginShellInit = ''
-      echo "Hello!"
       if uwsm check may-start && uwsm select;
       then
         exec uwsm start default
@@ -87,7 +87,6 @@
   # Graphics
   hardware.graphics = {
 	  enable = true;
-    
   };
 
   # Pulseaudio
@@ -104,17 +103,14 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
-  # Configure keymap in X11
   services.xserver.xkb.layout = "pl";
   services.xserver.xkb.options = "eurosign:e,caps:escape";
 
-  # Enable sound.
   services.pipewire = {
      enable = true;
      pulse.enable = true;
   };
   
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.esther = {
      isNormalUser = true;
      extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
@@ -124,8 +120,6 @@
      shell = pkgs.bash;
    };
 
-  programs.firefox.enable = true;
-
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.mtr.enable = true;
@@ -134,13 +128,9 @@
     enableSSHSupport = true;
   };
 
-  # Polkit
   security.polkit.enable = true;
-
-  # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 22 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
 
