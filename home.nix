@@ -229,7 +229,132 @@ in {
     };
   };
 
-  programs.niri = { enable = true; };
+  programs.niri = with config.lib.niri.actions; {
+    enable = true;
+    settings = {
+      window-rules = [{
+        matches = [{ title = "dunst"; }];
+        open-floating = true;
+      }];
 
+      prefer-no-csd = true;
+      spawn-at-startup =
+        [ { command = [ "alacritty" ]; } { command = [ "waybar" ]; } ];
+      layout = {
+        focus-ring = {
+          active.color = "rgb(224 107 117)";
+          width = 2;
+        };
+        shadow.enable = true;
+      };
+      binds = {
+        "Alt+Q".action = spawn "alacritty";
+        "Alt+W".action = spawn "rofi" "-show" "drun";
+        "Alt+F".action = spawn "firefox";
+        "Alt+C".action = close-window;
+
+        "Alt+Shift+W".action = move-window-up;
+        "Alt+Shift+S".action = move-window-down;
+
+        "Alt+Shift+Z".action = move-column-left;
+        "Alt+Shift+X".action = move-column-right;
+
+        # workspace keybinds
+      } // builtins.listToAttrs (builtins.map (x: {
+        name = "Alt+${toString x}";
+        value = { action = focus-workspace x; };
+      }) (builtins.genList (x: x + 1) 9))
+      # keyminds for move-column-to-workspace
+        // builtins.listToAttrs (builtins.map (x: {
+          name = "Alt+Shift+${toString x}";
+          value = { action = move-column-to-workspace x; };
+        }) (builtins.genList (x: x + 1) 9));
+    };
+  };
+
+  programs.waybar = {
+    enable = true;
+    settings = [{
+      position = "top";
+      mod = "dock";
+      exclusive = true;
+      passthrough = false;
+      height = 0;
+      gtk-layer-shell = true;
+
+      modules-left = [ "niri/workspaces" ];
+
+      modules-right = [ "cpu" "memory" "clock" "tray" ];
+
+      "niri/workspaces" = {
+        disable-scroll = true;
+        all-outputs = true;
+        warp-on-scroll = false;
+        format = "{name} {icon}";
+        format-icons = {
+          "1" = "";
+          "2" = "";
+          "3" = "";
+          "4" = "";
+          "5" = "";
+          "6" = "";
+          "active" = "<";
+          "default" = "";
+        };
+
+        persistent-workspaces = { "*" = 6; };
+
+      };
+
+      tray = { spacing = 10; };
+
+      clock = {
+        tooltip-format = ''
+          <big>{:%Y %B}</big>
+          <tt><small>{calendar}</small></tt>'';
+        format-alt = "{:%Y-%m-%d}";
+      };
+
+      cpu = {
+        format = "cpu: {usage}%";
+        tooltip = false;
+      };
+
+      memory = { format = "memory: {}%"; };
+
+      temperature = {
+        critical-threshold = 80;
+        format = "{temperatureC}°C {icon}";
+        format-icons = [ "" "" "" ];
+      };
+
+      network = {
+        format-ethernet = "{ipaddr}/{cidr} ";
+        tooltip-format = "{ifname} via {gwaddr} ";
+        format-linked = "{ifname} (No IP) ";
+        format-disconnected = "Disconnected ⚠";
+        format-alt = "{ifname}: {ipaddr}/{cidr}";
+      };
+
+      pulseaudio = {
+        format = "{volume}% {icon} {format_source}";
+        format-bluetooth = "{volume}% {icon} {format_source}";
+        format-bluetooth-muted = " {icon} {format_source}";
+        format-muted = " {format_source}";
+        format-source = "{volume}% ";
+        format-source-muted = "";
+        format-icons = {
+          headphone = "";
+          hands-free = "";
+          headset = "";
+          phone = "";
+          portable = "";
+          car = "";
+          default = [ "" "" "" ];
+        };
+        on-click = "pavucontrol";
+      };
+    }];
+  };
 }
 
