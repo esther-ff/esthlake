@@ -221,11 +221,24 @@ in {
     };
 
     languages = {
-      language = [{
-        name = "nix";
-        auto-format = true;
-        formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
-      }];
+
+      language-server.clangd = {
+        command = "${pkgs.clang-tools}/bin/clangd";
+        # args = [ "--std=c++17" ];
+      };
+      language = [
+        {
+          name = "nix";
+          auto-format = true;
+          formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
+        }
+
+        {
+          name = "cpp";
+          auto-format = true;
+          formatter.command = "${pkgs.clang-tools}/bin/clang-format";
+        }
+      ];
     };
   };
 
@@ -233,7 +246,7 @@ in {
     enable = true;
     settings = {
       window-rules = [{
-        matches = [{ title = "dunst"; }];
+        matches = [{ title = "Dunst"; }];
         open-floating = true;
       }];
 
@@ -258,6 +271,9 @@ in {
 
         "Alt+Shift+Z".action = move-column-left;
         "Alt+Shift+X".action = move-column-right;
+
+        "Alt+E".action = focus-column-left;
+        "Alt+R".action = focus-column-right;
 
         # workspace keybinds
       } // builtins.listToAttrs (builtins.map (x: {
