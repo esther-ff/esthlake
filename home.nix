@@ -18,6 +18,7 @@ in {
       protonvpn-gui
       firefox
       clang-tools
+      uwsm
     ];
 
     sessionVariables = {
@@ -29,15 +30,27 @@ in {
     file.".npmrc".text = lib.generators.toINIWithGlobalSection { } {
       globalSection = { prefix = "$HOME/.npm-packages"; };
     };
-  };
-  # // musicLib.handleFileList [{
-  #   name = "cat.jpg";
-  #   link =
-  #     "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Cat_November_2010-1a.jpg/800px-Cat_November_2010-1a.jpg";
-  #   hash = "0r3jwna7jxw2wafpsgqvbk7ka7qkmp6dx6ndql70pbd20k688qsw";
-  # }];
+  } // musicLib.handleFileList [{
+    name = "cat.jpg";
+    link =
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Cat_November_2010-1a.jpg/800px-Cat_November_2010-1a.jpg";
+    hash = "0r3jwna7jxw2wafpsgqvbk7ka7qkmp6dx6ndql70pbd20k688qsw";
+  }];
 
   programs.home-manager.enable = true;
+
+  # programs.uwsm.waylandCompositors = [
+  #   {
+  #     prettyName = "hyprland";
+  #     comment = "hyprland on uwsm YAY";
+  #     binPath = "${pkgs.hyprland}/bin/Hyprland";
+  #   }
+  #   {
+  #     prettyName = "niri";
+  #     comment = "swipe swipe scroll";
+  #     binPath = "${pkgs.niri}/bin/niri";
+  #   }
+  # ];
 
   # XDG Portal
   xdg = {
@@ -145,31 +158,30 @@ in {
     interactiveShellInit = ''
       function fish_greeting
         echo Defend the Trocadero! En avant!
+        uname -a
+        date
       end
 
       set -g fish_greeting
 
       set -x PATH "$HOME/.npm_packages/bin/" $PATH
-
-      alias nixcfg="sudo hx /etc/nixos"
-
     '';
 
     shellAbbrs = { projs = "cd /data/git"; };
 
     shellAliases = {
-      nixcfg = "sudo hx /etc/nixos";
       ctest = "cargo test";
       cmtest = "cargo miri test";
       cchck = "cargo check";
-      gcmt = "git commit";
+      gcmt = "git commit -m";
       gpsh = "git push";
       nxsh = "nix-shell -p";
       proj = "hx /data/git/";
-      hmreload =
-        "home-manager switch --flake ~/.config/nixpkgs/home-cfg#esther -b backup";
-      nxrebuild = "sudo nixos-rebuild switch";
-      hmcfg = "hx ~/.config/nixpkgs/home-cfg/home.nix";
+      # hmreload =
+      #   "home-manager switch --flake ~/.config/nixpkgs/home-cfg#esther -b backup";
+      nxrebuild = "sudo nixos-rebuild switch --flake /data/git/nixyay#enby";
+      hmcfg = "hx /data/git/nixyay/home.nix";
+      nixcfg = "hx /data/git/nixyay";
     };
 
     plugins = [
@@ -204,7 +216,7 @@ in {
   programs.helix = {
     enable = true;
     settings = {
-      theme = "gruvbox";
+      theme = "onedark";
       editor = { completion-timeout = 5; };
     };
 
@@ -217,16 +229,7 @@ in {
     };
   };
 
-  # test okay!
-  # home.file = {
-  #   "test.jpg" = builtins.readFile (builtins.fetchurl {
-  #     url =
-  #       ;
-  #     ;
-  #   });
-  # };
-
-  # npm configuration
+  programs.niri = { enable = true; };
 
 }
 

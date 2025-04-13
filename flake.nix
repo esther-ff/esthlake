@@ -21,7 +21,7 @@
       homeConfigurations = {
         esther = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          modules = [ ./home.nix ./niri.nix ];
+          modules = [ ./home.nix niri.homeModules.niri ];
         };
       };
 
@@ -36,6 +36,9 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               backupFileExtension = "bak";
+              users.esther = { pkgs, ... }: {
+                imports = [ ./home.nix niri.homeModules.niri ];
+              };
             };
           }
           # Separated for clarity
