@@ -23,4 +23,5 @@ pkgs: with pkgs; [
      grc
      nixfmt-rfc-style
      nil
+     bun
 ]

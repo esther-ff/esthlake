@@ -5,14 +5,15 @@
     wantedBy = ["multi-user.target"];
     after = ["network.target"];
 
-    description = "shit bridge bot";
+    description = "Hehe bridge bot :3";
 
     serviceConfig = {
       Type = "simple";
       User = "esther";
 
       WorkingDirectory = "/data/git/uuhbot";
-      ExecStart = ''${pkgs.nodejs}/bin/node /data/git/uuhbot/main.js'';
+      #ExecStart = ''${pkgs.bun}/bin/bun run /data/git/uuhbot/main.ts'';
+      ExecStart = '''';
       Restart = "on-failure";
 
       KillMode = "process";
