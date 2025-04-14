@@ -18,12 +18,11 @@ in {
       protonvpn-gui
       firefox
       clang-tools
-      uwsm
     ];
 
     sessionVariables = {
-      MOZ_ENABLE_WAYLAND = "1";
-      MOZ_USE_XINPUT = "1";
+      # MOZ_ENABLE_WAYLAND = "1";
+      # MOZ_USE_XINPUT = "1";
       XDG_SESSION_TYPE = "wayland";
     };
 
@@ -274,6 +273,9 @@ in {
 
         "Alt+E".action = focus-column-left;
         "Alt+R".action = focus-column-right;
+
+        "Alt+Left".action = set-column-width "+10%";
+        "Alt+Right".action = set-column-width "-10%";
 
         # workspace keybinds
       } // builtins.listToAttrs (builtins.map (x: {
