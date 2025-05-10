@@ -18,6 +18,7 @@ in {
       protonvpn-gui
       firefox
       clang-tools
+      zerotierone
     ];
 
     sessionVariables = {
