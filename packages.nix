@@ -1,27 +1,27 @@
-pkgs: with pkgs; [
-     dunst
-     wget
-     linux-firmware
-     git
-     pipewire
-     inetutils
-     ethtool
-     helix
-     rofi-wayland
-     alacritty
-     ntfs3g
-     lshw
-     pciutils
-     rustup
-     go
-     pavucontrol
-     libgcc
-     gcc
-     waybar
-     nodejs
-     uwsm
-     grc
-     nixfmt-rfc-style
-     nil
-     bun
+pkgs:
+with pkgs; [
+  dunst
+  wget
+  linux-firmware
+  git
+  pipewire
+  inetutils
+  ethtool
+  helix
+  alacritty
+  ntfs3g
+  lshw
+  pciutils
+  rustup
+  go
+  pavucontrol
+  libgcc
+  gcc
+  waybar
+  nodejs
+  uwsm
+  grc
+  nixfmt-rfc-style
+  nil
+  bun
 ]

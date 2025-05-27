@@ -12,12 +12,16 @@
     niri.url = "github:sodiboo/niri-flake";
   };
 
-  outputs = { self, nixpkgs, home-manager, niri, ... }:
+  outputs = { nixpkgs, home-manager, niri, ... }:
     let
       # lib = nixpkgs.lib;
       system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [ niri.overlays.niri ];
+      };
     in {
+
       homeConfigurations = {
         esther = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
@@ -29,6 +33,7 @@
         system = "x86_64-linux";
         modules = [
           ./configuration.nix
+          { nixpkgs.overlays = [ niri.overlays.niri ]; }
 
           home-manager.nixosModules.home-manager
           {

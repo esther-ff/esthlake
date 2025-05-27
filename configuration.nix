@@ -39,7 +39,7 @@
       loginShellInit = ''
         if uwsm check may-start && uwsm select;
         then
-          exec uwsm start default
+          exec niri
         fi
       '';
     };
@@ -75,15 +75,14 @@
       overrideStrategy = "asDropin";
       serviceConfig.ExecStart = [
         ""
-        "@${pkgs.util-linux}/sbin/agetty agetty --login-program ${config.services.getty.loginProgram} --autologin esther --noclear --keep-baud %I 115200,38400,9600 $TERM"
+        "@${pkgs.util-linux}/sbin/agetty agetty -o '-p -- esther' --login-program ${config.services.getty.loginProgram}  --noclear --keep-baud %I 115200,38400,9600 $TERM"
       ];
     };
   };
 
-  i18n = {
-    defaultLocale = "en_US.UTF-8";
-    consoleUseXkbConfig = true;
-  };
+  i18n = { defaultLocale = "en_US.UTF-8"; };
+
+  console = { useXkbConfig = true; };
 
   services = {
     xserver = {
