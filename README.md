@@ -1,6 +1,6 @@
 # Esthlake!
 
-## My *awful* nix configuration contained in one big union of all the modules in the world, the humble Nix flake.
+ My *awful* nix configuration contained in one big union of all the modules in the world, the humble Nix flake.
 
 # Anything cool?
 - module for niri
@@ -13,6 +13,6 @@
 
 # bind operator
 bind operator >>=
->>= bind operator
+\>\>= bind operator
 
 bind operator Galore!
