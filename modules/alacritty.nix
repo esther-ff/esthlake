@@ -1,7 +1,6 @@
 { config, lib, ... }:
 let
-  scheme = import ../assets/theme.nix;
-  inherit (import ../lib) colorPicker;
+  inherit (lib.estera) colorPicker colorScheme;
   inherit (lib.options) mkEnableOption;
   inherit (config.estera.flake.system) user;
 
@@ -24,8 +23,8 @@ in {
 
           colors = {
             primary = {
-              background = scheme.bg;
-              foreground = scheme.fg;
+              background = colorScheme.bg;
+              foreground = colorScheme.fg;
             };
 
             normal = {

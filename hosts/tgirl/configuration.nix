@@ -1,15 +1,13 @@
-{ config, pkgs, inputs, ... }:
- {
+{ config, pkgs, inputs, ... }: {
   # Lonely...!
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  fonts.packages = 
-    with pkgs; [
-      fira-code
-      fira-code-symbols
-      noto-fonts
-      noto-fonts-emoji
-    ];
+  fonts.packages = with pkgs; [
+    fira-code
+    fira-code-symbols
+    noto-fonts
+    noto-fonts-emoji
+  ];
 
   time.timeZone = "Europe/Warsaw";
   environment.systemPackages = import ./packages.nix pkgs;
@@ -115,6 +113,7 @@
       niri = {
         enable = true;
         wallpaper = "flamingo.png";
+        wallpaperSource = ../../assets/wallpapers;
       };
       helix.enable = true;
     };

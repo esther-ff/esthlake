@@ -1,9 +1,9 @@
 { config, lib, ... }:
 let
-  inherit (import ../lib) colorPicker;
+  inherit (lib.estera) colorPicker;
   inherit (lib.options) mkEnableOption;
   inherit (config.estera.flake.system) user;
-  
+
   colorScheme = import ../assets/theme.nix;
   cfg = config.estera.programs.waybar;
 in {
@@ -11,7 +11,7 @@ in {
 
   config = lib.modules.mkIf cfg.enable {
     home-manager.users.${user} = {
-            programs.waybar = {
+      programs.waybar = {
         enable = true;
         style = ''
                  * {
@@ -51,12 +51,16 @@ in {
                   /* border: 2px solid #140e07; */
                 }
 
-                #workspaces button.active { background-color:  ${colorPicker 1}; }
+                #workspaces button.active { background-color:  ${
+                  colorPicker 1
+                }; }
                 #workspaces button.focused {
                       background-color: ${colorPicker 2};
                       /* box-shadow: inset 0 -3px #b586e8; */
                  }
-                #workspaces button.urgent { background-color:  ${colorPicker 3}; }
+                #workspaces button.urgent { background-color:  ${
+                  colorPicker 3
+                }; }
 
           button {
             padding: 0px;

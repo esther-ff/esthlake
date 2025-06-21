@@ -3,15 +3,28 @@ let
   cfg = config.estera.programs.niri;
   inherit (config.estera.flake.system) user;
   inherit (lib.options) mkEnableOption mkOption;
-  inherit (lib) types;
+  inherit (lib) types attrNames;
   inherit (config.home-manager.users.${user}.lib) niri;
 
+  pathToWallpaper = "${cfg.wallpaperSource}/${cfg.wallpaper}";
+
 in {
-  options.estera.programs.niri = { enable = mkEnableOption "niri"; wallpaper = mkOption {
-    description = "file name of the wallpaper image located in assets/wallpapers/";
-    type = types.str;
-    default = null;
-  }; };
+  options.estera.programs.niri = {
+    enable = mkEnableOption "niri";
+
+    wallpaperSource = mkOption {
+      description = "directory containing wallpapers";
+      type = types.path;
+      default = ../assets/wallpapers;
+    };
+
+    wallpaper = mkOption {
+      description =
+        "file name of the wallpaper image located in assets/wallpapers/";
+      type = types.enum (attrNames (builtins.readDir cfg.wallpaperSource));
+      default = null;
+    };
+  };
 
   imports = [ inputs.niri.nixosModules.niri ];
 
@@ -35,7 +48,7 @@ in {
           prefer-no-csd = true;
           spawn-at-startup = [
             { command = [ "firefox" ]; }
-            { command = [ "swaybg" "-i" "../assets/wallpapers/${cfg.wallpaper}" ]; }
+            { command = [ "swaybg" "-i" pathToWallpaper ]; }
             { command = [ "waybar" ]; }
           ];
           layout = {

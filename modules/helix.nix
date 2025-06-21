@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   scheme = import ../assets/theme.nix;
-  inherit (import ../lib) colorPicker flattenToml;
+  inherit (lib.estera) colorPicker flattenToml;
   inherit (lib) mkIf;
   inherit (scheme) fg bg;
   inherit (lib.options) mkEnableOption;
@@ -137,7 +137,7 @@ let
       };
     };
   };
-  theme =  {
+  theme = {
     inherit fg;
     inherit bg;
 
@@ -165,7 +165,7 @@ let
     light-green = colorPicker 13;
     light-magenta = colorPicker 14;
     light-red = colorPicker 15;
-  } // (flattenToml lib themeSet);
+  } // (flattenToml themeSet);
 in {
   options.estera.programs.helix = { enable = mkEnableOption "helix"; };
 
