@@ -1,17 +1,16 @@
-{ config, pkgs, ... }:
-
-{
-  imports = [
-    ./hardware-configuration.nix
-    ./fstab.nix
-    ./services/services.nix
-    ./modules/wireguard.nix
-    # ./containers.nix
-  ];
-
+{ config, pkgs, inputs, ... }:
+ {
   # Lonely...!
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  fonts.packages = import ./fonts.nix pkgs;
+
+  fonts.packages = 
+    with pkgs; [
+      fira-code
+      fira-code-symbols
+      noto-fonts
+      noto-fonts-emoji
+    ];
+
   time.timeZone = "Europe/Warsaw";
   environment.systemPackages = import ./packages.nix pkgs;
   security.polkit.enable = true;
@@ -38,31 +37,10 @@
       '';
 
       loginShellInit = ''
-        if uwsm check may-start then
+        if uwsm check may-start; then
           exec niri-session
         fi
       '';
-    };
-  };
-
-  boot = {
-    # extraModulePackages = with config.boot.kernelPackages; [ r8168 ];
-    # blacklistedKernelModules = [ "r8169" ];
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
-  };
-
-  networking = {
-    hostName = "tgirl";
-    useNetworkd = true;
-    firewall.allowedTCPPorts = [ 22 ];
-
-    nat = {
-      enable = true;
-      internalInterfaces = [ "nx-*" ];
-      externalInterface = "eno1";
     };
   };
 
@@ -123,6 +101,23 @@
     extraGroups = [ "wheel" ];
     # packages = with pkgs; [ ];
     shell = pkgs.bash;
+  };
+
+  estera = {
+    home-manager.enable = true;
+
+    programs = {
+      alacritty.enable = true;
+      fish.enable = true;
+      rofi.enable = true;
+      waybar.enable = true;
+      xdg-portal.enable = true;
+      niri = {
+        enable = true;
+        wallpaper = "flamingo.png";
+      };
+      helix.enable = true;
+    };
   };
 }
 

@@ -1,54 +1,49 @@
 {
-  description = "Wahoo! NixOS";
+  description = "Girlskissing!!!!!! :3";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-24.11";
+    nixpkgs.url = "nixpkgs/nixos-unstable";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     niri.url = "github:sodiboo/niri-flake";
   };
 
-  outputs = { nixpkgs, home-manager, niri, ... }:
+  outputs = inputs@{ nixpkgs, home-manager, niri, ... }:
     let
-      # lib = nixpkgs.lib;
+      lib = nixpkgs.lib;
       system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = [ niri.overlays.niri ];
-      };
-    in {
+      systems = [ "x86_64-linux" ]; # all i got :)
 
-      homeConfigurations = {
-        esther = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [ ./home.nix niri.homeModules.niri ];
-        };
-      };
+      nixosConfigurations = import ./hosts { inherit lib inputs; };
+      forAllSystems = lib.genAttrs systems;
 
-      nixosConfigurations.tgirl = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ./configuration.nix
-          { nixpkgs.overlays = [ niri.overlays.niri ]; }
+      #   nixosConfigurations.tgirl = nixpkgs.lib.nixosSystem {
+      #     system = "x86_64-linux";
+      #     modules = [
+      #       ./configuration.nix
+      #       { nixpkgs.overlays = [ niri.overlays.niri ]; }
 
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              backupFileExtension = "bak";
-              users.esther = { pkgs, ... }: {
-                imports = [ ./home.nix niri.homeModules.niri ];
-              };
-            };
-          }
-          # Separated for clarity
-        ];
-      };
-    };
+      #       home-manager.nixosModules.home-manager
+      #       {
+      #         home-manager = {
+      #           useGlobalPkgs = true;
+      #           useUserPackages = true;
+      #           backupFileExtension = "bak";
+      #           users.esther = { pkgs, ... }: {
+      #             imports = [ ./home.nix niri.homeModules.niri ];
+      #           };
+      #         };
+      #       }
+      #       # Separated for clarity
+      #     ];
+      #   };
+      # };
+      #
+
+    in { inherit nixosConfigurations; };
+
 }
-

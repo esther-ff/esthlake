@@ -1,7 +1,7 @@
 pkgs:
 with pkgs; [
   dunst
-  wget
+  swaybg
   linux-firmware
   git
   pipewire
@@ -13,7 +13,6 @@ with pkgs; [
   lshw
   pciutils
   rustup
-  go
   pavucontrol
   libgcc
   gcc
@@ -24,4 +23,6 @@ with pkgs; [
   nixfmt-rfc-style
   nil
   bun
+  firefox
+  rofi-wayland
 ]

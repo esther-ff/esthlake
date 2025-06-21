@@ -17,8 +17,6 @@
     serverIp = "149.34.244.154";
     port = 51820;
     networkToBlock = "192.168.0.0/24";
-    # publicKey = "y+psGTv+CANlwica4M3gVUQs7riXLTvFX3JWy14Tuks=";
-    # privateKeyFile = "/etc/vpn_key.key";
 
     publicKey = keys.pub;
     privateKeyFile = keys.priv;
