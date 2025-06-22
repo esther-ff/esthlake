@@ -1,6 +1,8 @@
 {
   bg = "#0c080f";
+  lightBg = "#1c1720";
   fg = "#f0b7d5";
+  darkFg = "#51042d";
 
   colors = [
     "#a11798"

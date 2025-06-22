@@ -10,37 +10,32 @@ let
 
   themeSet = {
     ui = {
-      background = { bg = "bg"; };
+      background = { bg = "background"; };
       cursor = {
         main = {
-          fg = "fg";
-          bg = "red";
+          fg = "red";
+          modifiers = [ "reversed" ];
         };
 
         primary = {
-          fg = "fg";
-          bg = "red";
-        };
-
-        insert = {
-          fg = "fg";
-          bg = "red";
-        };
-
-        select = {
-          fg = "fg";
-          bg = "red";
+          fg = "blue";
+          modifiers = [ "reversed" ];
         };
 
         match = {
-          fg = "fg";
-          bg = "red";
+          fg = "yellow";
+          underline.style = {
+            color = "background";
+            style = "dashed";
+          };
         };
       };
 
       text = {
-        main = { fg = "light"; };
-
+        main = {
+          fg = "fg";
+          bg = "bg";
+        };
         info = {
           bg = "bg";
           fg = "fg";
@@ -53,18 +48,15 @@ let
       };
 
       selection = {
-        main = {
-          bg = "yellow";
-          # fg = "bg";
-        };
+        main = { bg = "backgroundLight"; };
 
         primary = {
-          bg = "yellow";
-          # fg = "bg";
+          fg = "blue";
+          modifiers = [ "reversed" ];
         };
       };
 
-      window = { fg = "border"; };
+      window = { fg = "red"; };
 
       gutter = { bg = "bg"; };
 
@@ -175,42 +167,47 @@ let
     constant.numeric.float = { fg = "cyan"; }; # constant float value.
 
     string = { main.fg = "yellow"; };
-
     regexp = { fg = "yellow"; }; # Regular expression literal.
 
     special = { fg = "yellow"; }; # Strings containing a path, URL, etc.
     special.path = { fg = "yellow"; }; # String containing a file path.
     special.url = { fg = "yellow"; }; # String containing a web URL.
-    special.symbol = {
-      fg = "yellow";
-    }; # Erlang/Elixir atoms, Ruby symbols, Clojure keywords.
+    special.symbol = { fg = "yellow"; };
 
-    comment = { main.fg = "comm"; }; # This is a comm.
-    comment.line = { fg = "comm"; }; # Line comms, like this.
+    comment = {
+      main.fg = "darkFg";
+      modifiers = [ "bold" ];
+    };
+    comment.line = {
+      fg = "darkFg";
+      modifiers = [ "bold" ];
+    };
     comment.block = {
-      fg = "comm";
-    }; # Block comms, like /* this */ in some languages.
+      fg = "darkFg";
+      modifiers = [ "bold" ];
+    };
     comment.block.documentation = {
-      fg = "comm";
-    }; # Doc comms, e.g /// in rust.
+      fg = "darkFg";
+      modifiers = [ "bold" "italic" ];
+    };
 
-    variable = { fg = "text"; }; # Variable names.
+    variable = { fg = "text"; };
     variable.builtin = {
       fg = "cyan";
-      modifier = [ "bold" ];
-    }; # Language reserved variables: `this`, `self`, `super`, etc.
-    variable.parameter = { fg = "magenta"; }; # Function parameters.
-    variable.other.member = {
-      fg = "text";
-    }; # Fields of composite data types (e.g. structs, unions).
+      modifiers = [ "bold" ];
+    };
+    variable.parameter = { fg = "magenta"; };
+    variable.other.member = { fg = "text"; };
 
-    label = { fg = "cyan"; }; # Loop labels, among other things.
+    label = { fg = "cyan"; };
 
-    punctuation = { main.fg = "text"; }; # Any punctuation symbol.
-    punctuation.delimiter = {
+    punctuation = { main.fg = "text"; };
+    punctuation.delimiter = { fg = "blue"; };
+
+    punctuation.bracket = {
+      bg = "bg";
       fg = "blue";
-    }; # Commas, colons or other delimiter depending on the language.
-    punctuation.bracket = { fg = "blue"; }; # Parentheses, angle brackets, etc.
+    }; # Parentheses, angle brackets, etc.
 
     keyword = {
       main.fg = "green";
@@ -266,38 +263,44 @@ let
     };
     diagnostic.unnecessary = { modifiers = [ "dim" ]; };
     diagnostic.deprecate = { modifiers = [ "crossed_out" ]; };
+
     info = {
       fg = "blue";
-      modifiers = [ "bold" ];
+      modifiers = [ "bold" "italic" ];
     };
+
     hint = {
       fg = "green";
-      modifiers = [ "bold" ];
+      modifiers = [ "bold" "italic" ];
     };
+
     warning = {
       fg = "yellow";
-      modifiers = [ "bold" ];
+      modifiers = [ "bold" "italic" ];
     };
+
     error = {
       fg = "red";
-      modifiers = [ "bold" ];
+      modifiers = [ "bold" "italic" ];
     };
 
     namespace = { fg = "blue"; };
 
     diff = {
       plus = { fg = "green"; };
-      minus = { fg = "red"; }; # Deletions.
-      delta = { fg = "yellow"; }; # Modifications.
+      minus = { fg = "red"; };
+      delta = { fg = "yellow"; };
       delta.moved = { fg = "blue"; };
-    }; # Additions.
+    };
   };
+
   theme = {
     inherit fg;
     inherit bg;
-
     background = bg;
+    backgroundLight = colorScheme.lightBg;
     text = fg;
+    textDark = colorScheme.darkFg;
 
     dark = bg;
     light = fg;
@@ -314,7 +317,6 @@ let
     gray = colorPicker 9;
 
     light-black = colorPicker 10;
-
     light-blue = colorPicker 11;
     light-cyan = colorPicker 12;
     light-green = colorPicker 13;
