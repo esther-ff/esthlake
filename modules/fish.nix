@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   cfg = config.estera.programs.fish;
+  path = "/data/git/nixyay";
 
   inherit (config.estera.flake.system) user;
   inherit (lib.options) mkEnableOption;
@@ -30,14 +31,16 @@ in {
           ctest = "cargo mommy test";
           cmtest = "cargo mommy miri test";
           cchck = "cargo mommy check";
+          g = "git";
+          v = "hx";
+          ":q" = "exit";
           gcmt = "git commit -m";
           gpsh = "git push";
           nxsh = "nix-shell -p";
           proj = "hx /data/git/";
           cargo = "cargo mommy";
-          nxrebuild =
-            "sudo nixos-rebuild switch --flake /data/git/nixyay#tgirl";
-          nixcfg = "hx /data/git/nixyay";
+          nxr = "sudo nixos-rebuild switch --flake ${path}#tgirl";
+          nixcfg = "hx ${path}";
           snooze = "poweroff";
 
         };
