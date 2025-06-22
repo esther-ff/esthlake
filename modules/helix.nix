@@ -1,40 +1,40 @@
 { config, lib, pkgs, ... }:
 let
-  scheme = import ../assets/theme.nix;
-  inherit (lib.estera) colorPicker flattenToml;
-  inherit (lib) mkIf;
-  inherit (scheme) fg bg;
-  inherit (lib.options) mkEnableOption;
-  inherit (config.estera.flake.system) user;
-
   cfg = config.estera.programs.helix;
+
+  inherit (config.estera.flake.system) user;
+  inherit (lib.estera) colorPicker flattenToml colorScheme;
+  inherit (colorScheme) fg bg;
+  inherit (lib) mkIf;
+  inherit (lib.options) mkEnableOption;
+
   themeSet = {
     ui = {
       background = { bg = "bg"; };
       cursor = {
         main = {
-          fg = "dark";
-          bg = "light";
+          fg = "fg";
+          bg = "red";
         };
 
         primary = {
-          fg = "dark";
-          bg = "light";
+          fg = "fg";
+          bg = "red";
         };
 
         insert = {
-          fg = "dark";
-          bg = "light";
+          fg = "fg";
+          bg = "red";
         };
 
         select = {
-          fg = "dark";
-          bg = "light";
+          fg = "fg";
+          bg = "red";
         };
 
         match = {
-          fg = "dark";
-          bg = "light";
+          fg = "fg";
+          bg = "red";
         };
       };
 
@@ -54,13 +54,13 @@ let
 
       selection = {
         main = {
-          bg = "light";
-          fg = "dark";
+          bg = "yellow";
+          # fg = "bg";
         };
 
         primary = {
-          bg = "light";
-          fg = "dark";
+          bg = "yellow";
+          # fg = "bg";
         };
       };
 
@@ -96,13 +96,19 @@ let
       };
 
       linenr = {
-        main = { fg = "text_muted"; };
+        main = { fg = "text"; };
         selected = { fg = "text"; };
       };
 
       virtual = {
-        ruler = { bg = "element_hover"; };
-        whitespace = { fg = "text_muted"; };
+        ruler = { bg = "text"; };
+        whitespace = { fg = "text"; };
+
+        inlay-hint = { fg = "red"; };
+        jump-label = {
+          fg = "red";
+          modifiers = [ "bold" ];
+        };
       };
 
       help = {
@@ -135,7 +141,156 @@ let
           fg = "fg";
         };
       };
+    }; # String literal.
+
+    property = { main.fg = "text"; }; # Regex group names.
+    special = {
+      main.fg = "cyan";
+    }; # Special symbols e.g `?` in Rust, `...` in Hare.
+    attribute = {
+      main.fg = "magenta";
+    }; # Class attributes, html tag attributes.
+
+    type = {
+      main.fg = "blue";
+    }; # Variable type, like integer or string, including program defined classes, structs etc..
+    type.builtin = {
+      fg = "blue";
+    }; # Primitive types of the language (string, int, float).
+    type.enum.variant = { fg = "blue"; }; # A variant of an enum.
+
+    constructor = {
+      main.fg = "blue";
+    }; # Constructor method for a class or struct.
+
+    constant = { main.fg = "green"; }; # Constant value
+    constant.builtin = {
+      fg = "green";
+    }; # Special constants like `true`, `false`, `none`, etc.
+    constant.builtin.boolean = { fg = "cyan"; }; # True or False.
+    constant.character = { fg = "yellow"; }; # Constant of character type.
+    constant.character.escape = { fg = "yellow"; }; # escape codes like \n.
+    constant.numeric = { fg = "cyan"; }; # constant integer or float value.
+    constant.numeric.integer = { fg = "cyan"; }; # constant integer value.
+    constant.numeric.float = { fg = "cyan"; }; # constant float value.
+
+    string = { main.fg = "yellow"; };
+
+    regexp = { fg = "yellow"; }; # Regular expression literal.
+
+    special = { fg = "yellow"; }; # Strings containing a path, URL, etc.
+    special.path = { fg = "yellow"; }; # String containing a file path.
+    special.url = { fg = "yellow"; }; # String containing a web URL.
+    special.symbol = {
+      fg = "yellow";
+    }; # Erlang/Elixir atoms, Ruby symbols, Clojure keywords.
+
+    comment = { main.fg = "comm"; }; # This is a comm.
+    comment.line = { fg = "comm"; }; # Line comms, like this.
+    comment.block = {
+      fg = "comm";
+    }; # Block comms, like /* this */ in some languages.
+    comment.block.documentation = {
+      fg = "comm";
+    }; # Doc comms, e.g /// in rust.
+
+    variable = { fg = "text"; }; # Variable names.
+    variable.builtin = {
+      fg = "cyan";
+      modifier = [ "bold" ];
+    }; # Language reserved variables: `this`, `self`, `super`, etc.
+    variable.parameter = { fg = "magenta"; }; # Function parameters.
+    variable.other.member = {
+      fg = "text";
+    }; # Fields of composite data types (e.g. structs, unions).
+
+    label = { fg = "cyan"; }; # Loop labels, among other things.
+
+    punctuation = { main.fg = "text"; }; # Any punctuation symbol.
+    punctuation.delimiter = {
+      fg = "blue";
+    }; # Commas, colons or other delimiter depending on the language.
+    punctuation.bracket = { fg = "blue"; }; # Parentheses, angle brackets, etc.
+
+    keyword = {
+      main.fg = "green";
+      control = { fg = "green"; }; # Control keywords.
+      control.conditional = { fg = "green"; }; # `if`, `else`, `elif`.
+      control.repeat = { fg = "green"; }; # `for`, `while`, `loop`.
+      control.import = { fg = "green"; }; # `import`, `export` `use`.
+      control.return = { fg = "green"; }; # `return` in most languages.
+      control.exception = {
+        fg = "green";
+      }; # `try`, `catch`, `raise`/`throw` and related.
+
+      operator = { fg = "green"; }; # `or`, `and`, `in`.
+      directive = { fg = "green"; }; # Preprocessor directives (#if in C...).
+      function = {
+        fg = "green";
+        modifier = [ "bold" ];
+      }; # The keyword to define a function: def, fun, fn.
+    }; # Language reserved keywords.
+
+    operator = {
+      main.fg = "green";
+    }; # Logical, mathematical, and other operators.
+
+    function = {
+      main.fg = "cyan";
+      builtin = { fg = "cyan"; };
+      method = { fg = "cyan"; }; # Class / Struct methods.
+      macro = { fg = "cyan"; };
+      special = { fg = "cyan"; }; # Preprocessor in C.
     };
+
+    tag = {
+      main.fg = "blue";
+      error = { fg = "red"; };
+    };
+
+    diagnostic.info.underline = {
+      color = "blue";
+      style = "cur";
+    };
+    diagnostic.hint.underline = {
+      color = "green";
+      style = "cur";
+    };
+    diagnostic.warning.underline = {
+      color = "yellow";
+      style = "cur";
+    };
+    diagnostic.error.underline = {
+      color = "red";
+      style = "cur";
+    };
+    diagnostic.unnecessary = { modifiers = [ "dim" ]; };
+    diagnostic.deprecate = { modifiers = [ "crossed_out" ]; };
+    info = {
+      fg = "blue";
+      modifiers = [ "bold" ];
+    };
+    hint = {
+      fg = "green";
+      modifiers = [ "bold" ];
+    };
+    warning = {
+      fg = "yellow";
+      modifiers = [ "bold" ];
+    };
+    error = {
+      fg = "red";
+      modifiers = [ "bold" ];
+    };
+
+    namespace = { fg = "blue"; };
+
+    diff = {
+      plus = { fg = "green"; };
+      minus = { fg = "red"; }; # Deletions.
+      delta = { fg = "yellow"; }; # Modifications.
+      delta.moved = { fg = "blue"; };
+    }; # Additions.
   };
   theme = {
     inherit fg;
