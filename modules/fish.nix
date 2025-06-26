@@ -28,9 +28,9 @@ in {
         shellAbbrs = { projs = "cd /data/git"; };
 
         shellAliases = {
-          ctest = "cargo mommy test";
-          cmtest = "cargo mommy miri test";
-          cchck = "cargo mommy check";
+          ctest = "cargo test";
+          cmtest = "cargo miri test";
+          cchck = "cargo check";
           g = "git";
           v = "hx";
           ":q" = "exit";

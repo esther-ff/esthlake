@@ -11,5 +11,6 @@ _: {
     ./xdg-portal.nix
     ./home-manager.nix
     ./system.nix
+    ./wireshark.nix
   ];
 }

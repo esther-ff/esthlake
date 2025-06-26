@@ -20,6 +20,9 @@
 
     publicKey = keys.pub;
     privateKeyFile = keys.priv;
+
+    containerSubnet = "172.16.0.0/24";
+
   in {
     wg0 = {
       address = [ "10.2.0.2/32" ];
@@ -45,6 +48,9 @@
           -m mark ! --mark $(wg show wg0 fwmark) \
           -m addrtype ! --dst-type LOCAL \
           -j REJECT
+        ${pkgs.iptables}/bin/iptables -I OUTPUT \
+        -s ${containerSubnet} -d ${containerSubnet} \
+        -j ACCEPT
       '';
 
       postDown = ''

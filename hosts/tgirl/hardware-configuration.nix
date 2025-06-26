@@ -70,11 +70,11 @@
   networking = {
     hostName = "tgirl";
     useNetworkd = true;
-    firewall.allowedTCPPorts = [ 22 ];
+    firewall.allowedTCPPorts = [ 22 80 443 ];
 
     nat = {
       enable = true;
-      internalInterfaces = [ "nx-*" ];
+      internalInterfaces = [ "ve-*" ];
       externalInterface = "eno1";
     };
   };

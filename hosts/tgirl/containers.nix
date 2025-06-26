@@ -1,53 +1,64 @@
+{ ... }:
+
 let
   repoName = "/data/git/uuhbot";
   repoBind = "/var/bigeon";
 in {
   containers = {
-    bigeon = {
+    mezieres = {
       ephemeral = true;
-      autoStart = false;
+      autoStart = true;
 
       privateNetwork = true;
-      hostAddress = "10.200.200.1";
-      localAddress = "10.200.200.2";
+      hostAddress = "172.16.0.1";
+      localAddress = "172.16.0.5";
 
-      bindMounts = { "${repoBind}" = { hostPath = repoName; }; };
+      bindMounts = {
+        "${repoBind}" = { hostPath = repoName; };
+        "/home/bigeon/.minecraft" = { hostPath = "/home/esther/.minecraft"; };
+      };
 
       config = { config, pkgs, lib, ... }: {
-        environment.systemPackages = with pkgs; [ bun shadow bash coreutils ];
+        environment.systemPackages = with pkgs; [
+          bun
+          shadow
+          bash
+          coreutils
+          traceroute
+          firefox
+        ];
 
         users.users.bigeon = {
           isNormalUser = true;
-          extraGroups = [ "wheel" "networkmanager" ];
+          extraGroups = [ "wheel" ];
           password = "bigeon";
           shell = pkgs.bash;
         };
 
-        systemd.services.bigeonBot = {
-          wantedBy = [ "multi-user.target" ];
-          after = [ "network.target" ];
+        # systemd.services.bigeon = {
+        #   wantedBy = [ "multi-user.target" ];
+        #   after = [ "network.target" ];
 
-          description = "Bridge Bot";
+        #   description = "bridge bot";
 
-          serviceConfig = {
-            Type = "simple";
-            User = "bigeon";
+        #   serviceConfig = {
+        #     Type = "simple";
+        #     User = "bigeon";
 
-            WorkingDirectory = "${repoBind}";
-            ExecStart = "${pkgs.bun}/bin/bun run ${repoBind}/main.ts";
-            # ExecStart = "";
-            Restart = "on-failure";
+        #     WorkingDirectory = "${repoBind}";
+        #     ExecStart = "${pkgs.bun}/bin/bun run ${repoBind}/main.ts";
+        #     # ExecStart = "";
+        #     Restart = "on-failure";
+        #     KillMode = "process";
+        #   };
+        # };
 
-            KillMode = "process";
-          };
-        };
-
-        system.stateVersion = "24.11";
+        system.stateVersion = "25.05";
 
         networking = {
           firewall = {
-            enable = true;
-            allowedTCPPorts = [ 443 80 ];
+            enable = false;
+            # allowedTCPPorts = [ 443 80 ];
           };
 
           useHostResolvConf = lib.mkForce false;

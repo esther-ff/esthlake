@@ -112,11 +112,13 @@
         '';
 
         loginStart = ''
+          echo "woof :3"
           if uwsm check may-start; then
             exec niri-session
           fi
         '';
       };
+      wireshark.enable = true;
     };
   };
 }

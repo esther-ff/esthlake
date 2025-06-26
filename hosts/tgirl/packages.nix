@@ -1,6 +1,8 @@
 pkgs:
 with pkgs; [
   dunst
+  wireshark
+  cargo-mommy
   swaybg
   linux-firmware
   git
