@@ -93,6 +93,7 @@
       alacritty.enable = true;
       fish.enable = true;
       rofi.enable = true;
+      steam.enable = true;
       waybar.enable = true;
       xdg-portal.enable = true;
       niri = {
