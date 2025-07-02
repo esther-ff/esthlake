@@ -38,6 +38,8 @@
   hardware.cpu.amd.updateMicrocode =
     lib.mkDefault config.hardware.enableRedistributableFirmware;
 
+  hardware.graphics.enable32Bit = true;
+
   fileSystems."/data" = {
     device = "UUID=9AEC4781EC475723";
     fsType = "ntfs";

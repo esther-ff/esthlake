@@ -25,6 +25,7 @@
       enable = true;
       enableSSHSupport = true;
     };
+    xwayland.enable = true;
   };
 
   systemd = {

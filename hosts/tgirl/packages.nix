@@ -1,6 +1,7 @@
 pkgs:
 with pkgs; [
   dunst
+  xwayland-satellite
   wireshark
   cargo-mommy
   swaybg
