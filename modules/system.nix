@@ -32,6 +32,31 @@ in {
       type = types.listOf types.str;
       default = [ "she" "they" ];
     };
+
+    # i dedicate this line to poz
+    # the idealist that suggested this
+    # because machines may aswell be somewhat human
+    # we treat them as opaque gods of computation
+    # but we never realize their costs on our population
+    # stop for a while, and realise the blood cost
+    # of your electronic devices, of the whole world
+    # can you truly change it?
+    # Yes, you can. However you need many
+    # fiery souls with one idea
+    # to destroy the current world
+    # and build one great new world
+    # a union of all the peoples
+    # in the world
+    # like a nix function, pure from
+    # inequality and oppression.
+    #
+    # au revoir, dear reader.
+    gender = mkOption {
+      description = "hehe... is this machine transgender???? (maybe???)";
+      type = types.any; # be free, my module. for free anarchy....!
+      default =
+        null; # Who cares for society's constructs, if society doesn't care for you?
+    };
   };
 
   config = {
