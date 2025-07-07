@@ -5,6 +5,6 @@ _: {
     ./hardware-configuration.nix
     ./services
     ./system.nix
-    # ./packages.nix
+    ./state-version.nix
   ];
 }

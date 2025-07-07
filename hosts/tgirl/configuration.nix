@@ -12,7 +12,6 @@
   time.timeZone = "Europe/Warsaw";
   environment.systemPackages = import ./packages.nix pkgs;
   security.polkit.enable = true;
-  system.stateVersion = "24.11";
 
   nixpkgs.config = {
     allowUnfree = true;
@@ -20,12 +19,10 @@
   };
 
   programs = {
-    mtr.enable = true;
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
     };
-    xwayland.enable = true;
   };
 
   systemd = {
@@ -64,20 +61,7 @@
       pulse.enable = true;
     };
 
-    # pulseaudio.extraConfig = "load-module module-echo-cancel";
     openssh.enable = true;
-  };
-
-  hardware = {
-    nvidia = {
-      modesetting.enable = true;
-      powerManagement.enable = true;
-      powerManagement.finegrained = false;
-      open = true;
-      nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
-    };
-    graphics = { enable = true; };
   };
 
   users.users.esther = {
@@ -121,6 +105,10 @@
         '';
       };
       wireshark.enable = true;
+      xwayland = {
+        enable = true;
+        useSatellite = true;
+      };
     };
   };
 }

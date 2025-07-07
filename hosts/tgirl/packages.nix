@@ -28,4 +28,5 @@ with pkgs; [
   bun
   firefox
   rofi-wayland
+  kdePackages.okular
 ]

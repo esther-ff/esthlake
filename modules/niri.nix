@@ -46,11 +46,14 @@ in {
             open-floating = true;
           }];
           prefer-no-csd = true;
+
           spawn-at-startup = [
             { command = [ "firefox" ]; }
             { command = [ "swaybg" "-i" pathToWallpaper ]; }
             { command = [ "waybar" ]; }
+            { command = [ "xwayland-satellite" "&" ]; }
           ];
+
           layout = {
             focus-ring = {
               active.color = "rgb(181 134 232)";
@@ -68,8 +71,8 @@ in {
             "Alt+Shift+W".action = move-window-up;
             "Alt+Shift+S".action = move-window-down;
 
-            "Alt+Shift+Z".action = move-column-left;
-            "Alt+Shift+X".action = move-column-right;
+            "Alt+Tab+E".action = move-column-left;
+            "Alt+Tab+R".action = move-column-right;
 
             "Alt+E".action = focus-column-left;
             "Alt+R".action = focus-column-right;

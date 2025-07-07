@@ -13,5 +13,6 @@ _: {
     ./home-manager.nix
     ./system.nix
     ./wireshark.nix
+    ./xwayland.nix
   ];
 }
