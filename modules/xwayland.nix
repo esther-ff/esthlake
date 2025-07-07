@@ -4,7 +4,7 @@ let
   inherit (lib) types;
   inherit (lib.options) mkOption mkEnableOption;
 in {
-  options.config.estera.programs.xwayland = {
+  options.estera.programs.xwayland = {
     enable = mkEnableOption "xwayland";
 
     useSatellite = mkOption {

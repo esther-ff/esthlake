@@ -1,6 +1,8 @@
 { config, pkgs, lib, inputs, ... }:
 let
   cfg = config.estera.programs.niri;
+  cfgXwayland = config.estera.programs.xwayland.useSatellite;
+
   inherit (config.estera.flake.system) user;
   inherit (lib.options) mkEnableOption mkOption;
   inherit (lib) types attrNames;
@@ -51,8 +53,9 @@ in {
             { command = [ "firefox" ]; }
             { command = [ "swaybg" "-i" pathToWallpaper ]; }
             { command = [ "waybar" ]; }
-            { command = [ "xwayland-satellite" "&" ]; }
-          ];
+          ] ++ lib.optional cfgXwayland {
+            command = [ "xwayland-satellite" "&" ];
+          };
 
           layout = {
             focus-ring = {
@@ -63,7 +66,7 @@ in {
           };
           binds = {
             "Alt+Q".action = spawn "alacritty";
-            "Alt+W".action = spawn "rofi" "-show" "drun";
+            "Alt+D".action = spawn "rofi" "-show" "drun";
             "Alt+F".action = spawn "firefox";
             "Alt+C".action = close-window;
             "Alt+S".action = screenshot;
@@ -71,8 +74,8 @@ in {
             "Alt+Shift+W".action = move-window-up;
             "Alt+Shift+S".action = move-window-down;
 
-            "Alt+Tab+E".action = move-column-left;
-            "Alt+Tab+R".action = move-column-right;
+            "Alt+W".action = move-column-left;
+            "Alt+A".action = move-column-right;
 
             "Alt+E".action = focus-column-left;
             "Alt+R".action = focus-column-right;

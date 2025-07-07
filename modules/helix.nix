@@ -1,4 +1,22 @@
 { config, lib, pkgs, ... }:
+# Nix, dear bastion of immutability, of functional programming
+# please `map` me over some fate, because i cannot `deepSeq` this
+# editors' configuration anymore... Purge this cursed "TOML" format
+# send it back to Hades...
+#
+# Send help...
+#
+# Goodnight, Nix evaluator
+# I hope your thousands of lines of C++ code
+# read this cry for help
+# and realize that your immutability and purity
+# is also a curse and a blessing for the entire
+# world. A world of all the peoples in the world.
+#
+# You unite and break apart,
+# with just functions and minimal control flow...
+#
+# Imagine the power, if you had switch statements.!
 let
   cfg = config.estera.programs.helix;
 
@@ -10,7 +28,7 @@ let
 
   themeSet = {
     ui = {
-      background = { bg = "background"; };
+      background = { bg = "bg"; };
       cursor = {
         main = {
           fg = "red";
@@ -25,30 +43,20 @@ let
         match = {
           fg = "yellow";
           underline.style = {
-            color = "background";
+            color = "bg";
             style = "dashed";
           };
         };
       };
 
       text = {
-        main = {
-          fg = "fg";
-          bg = "bg";
-        };
-        info = {
-          bg = "bg";
-          fg = "fg";
-        };
-
-        focus = {
-          fg = "text";
-          bg = "bg";
-        };
+        main = { fg = "text"; };
+        info = { fg = "text"; };
+        focus = { fg = "text"; };
       };
 
       selection = {
-        main = { bg = "backgroundLight"; };
+        main = { bg = "lightBg"; };
 
         primary = {
           fg = "blue";
@@ -113,124 +121,128 @@ let
       menu = {
         main = {
           fg = "text";
-          bg = "yellow";
+          bg = "bg";
         };
 
         selected = {
           fg = "text";
-          bg = "blue";
+          modifiers = [ "reversed" ];
+        };
+
+        scroll = {
+          fg = "text";
+          bg = "bg";
         };
       };
 
       popup = {
         main = {
-          bg = "yellow";
+          bg = "lightBg";
           fg = "fg";
         };
 
         info = {
-          bg = "bg";
+          bg = "lightBg";
           fg = "fg";
         };
       };
-    }; # String literal.
+    };
 
-    property = { main.fg = "text"; }; # Regex group names.
-    special = {
-      main.fg = "cyan";
-    }; # Special symbols e.g `?` in Rust, `...` in Hare.
-    attribute = {
-      main.fg = "magenta";
-    }; # Class attributes, html tag attributes.
+    property = { main.fg = "text"; }; # regex
+    special = { main.fg = "cyan"; };
+
+    attribute = { main.fg = "magenta"; };
 
     type = {
       main.fg = "blue";
-    }; # Variable type, like integer or string, including program defined classes, structs etc..
-    type.builtin = {
-      fg = "blue";
-    }; # Primitive types of the language (string, int, float).
-    type.enum.variant = { fg = "blue"; }; # A variant of an enum.
 
-    constructor = {
-      main.fg = "blue";
-    }; # Constructor method for a class or struct.
+      builtin = { fg = "blue"; };
+      enum.variant = { fg = "blue"; };
+    };
 
-    constant = { main.fg = "green"; }; # Constant value
-    constant.builtin = {
-      fg = "green";
-    }; # Special constants like `true`, `false`, `none`, etc.
-    constant.builtin.boolean = { fg = "cyan"; }; # True or False.
-    constant.character = { fg = "yellow"; }; # Constant of character type.
-    constant.character.escape = { fg = "yellow"; }; # escape codes like \n.
-    constant.numeric = { fg = "cyan"; }; # constant integer or float value.
-    constant.numeric.integer = { fg = "cyan"; }; # constant integer value.
-    constant.numeric.float = { fg = "cyan"; }; # constant float value.
+    constructor = { main.fg = "blue"; };
 
-    string = { main.fg = "yellow"; };
-    regexp = { fg = "yellow"; }; # Regular expression literal.
+    constant = {
+      main.fg = "green";
+      constant = { main.fg = "green"; };
+      builtin = {
+        fg = "green";
+        boolean = { fg = "cyan"; };
+      };
+      character = { fg = "yellow"; };
+      character.escape = { fg = "yellow"; };
+      numeric = {
+        fg = "cyan";
+        integer = { fg = "cyan"; };
+        float = { fg = "cyan"; };
+      };
+    };
 
-    special = { fg = "yellow"; }; # Strings containing a path, URL, etc.
-    special.path = { fg = "yellow"; }; # String containing a file path.
-    special.url = { fg = "yellow"; }; # String containing a web URL.
-    special.symbol = { fg = "yellow"; };
+    string = { main.fg = "red"; };
+    regexp = { fg = "yellow"; }; # regexp literal
+    special = {
+      fg = "yellow";
+      path = { fg = "yellow"; };
+      url = { fg = "yellow"; };
+      symbol = { fg = "yellow"; };
+    };
 
     comment = {
       main.fg = "darkFg";
       modifiers = [ "bold" ];
-    };
-    comment.line = {
-      fg = "darkFg";
-      modifiers = [ "bold" ];
-    };
-    comment.block = {
-      fg = "darkFg";
-      modifiers = [ "bold" ];
-    };
-    comment.block.documentation = {
-      fg = "darkFg";
-      modifiers = [ "bold" "italic" ];
+
+      line = {
+        fg = "darkFg";
+        modifiers = [ "bold" ];
+      };
+      block = {
+        fg = "darkFg";
+        modifiers = [ "bold" ];
+      };
+      block.documentation = {
+        fg = "darkFg";
+        modifiers = [ "bold" "italic" ];
+      };
     };
 
-    variable = { fg = "text"; };
-    variable.builtin = {
-      fg = "cyan";
-      modifiers = [ "bold" ];
+    variable = {
+      fg = "text";
+
+      builtin = { fg = "cyan"; };
+      parameter = { fg = "magenta"; };
+      other.member = { fg = "text"; };
     };
-    variable.parameter = { fg = "magenta"; };
-    variable.other.member = { fg = "text"; };
 
     label = { fg = "cyan"; };
 
-    punctuation = { main.fg = "text"; };
-    punctuation.delimiter = { fg = "blue"; };
-
-    punctuation.bracket = {
-      bg = "bg";
-      fg = "blue";
-    }; # Parentheses, angle brackets, etc.
+    punctuation = {
+      main.fg = "text";
+      delimiter = { fg = "blue"; };
+      bracket = { fg = "blue"; };
+    };
 
     keyword = {
       main.fg = "green";
-      control = { fg = "green"; }; # Control keywords.
-      control.conditional = { fg = "green"; }; # `if`, `else`, `elif`.
-      control.repeat = { fg = "green"; }; # `for`, `while`, `loop`.
-      control.import = { fg = "green"; }; # `import`, `export` `use`.
-      control.return = { fg = "green"; }; # `return` in most languages.
-      control.exception = {
+      control = {
         fg = "green";
-      }; # `try`, `catch`, `raise`/`throw` and related.
 
+        conditional = { fg = "green"; };
+        repeat = { fg = "green"; };
+        import = { fg = "green"; };
+        return = { fg = "green"; };
+        exception = { };
+      };
       operator = { fg = "green"; }; # `or`, `and`, `in`.
-      directive = { fg = "green"; }; # Preprocessor directives (#if in C...).
+      directive = {
+        fg = "green";
+      }; # incase i forget, this is preprocessor shit
       function = {
         fg = "green";
         modifier = [ "bold" ];
-      }; # The keyword to define a function: def, fun, fn.
-    }; # Language reserved keywords.
+      };
+    };
 
-    operator = {
-      main.fg = "green";
-    }; # Logical, mathematical, and other operators.
+    operator = { main.fg = "green"; };
 
     function = {
       main.fg = "cyan";
@@ -245,43 +257,46 @@ let
       error = { fg = "red"; };
     };
 
-    diagnostic.info.underline = {
-      color = "blue";
-      style = "cur";
+    diagnostic = {
+      info.underline = {
+        color = "blue";
+        style = "cur";
+      };
+      hint.underline = {
+        color = "green";
+        style = "cur";
+      };
+      warning.underline = {
+        color = "yellow";
+        style = "cur";
+      };
+      error.underline = {
+        color = "red";
+        style = "cur";
+      };
+
+      unnecessary = { modifiers = [ "dim" ]; };
+      deprecate = { modifiers = [ "crossed_out" ]; };
     };
-    diagnostic.hint.underline = {
-      color = "green";
-      style = "cur";
-    };
-    diagnostic.warning.underline = {
-      color = "yellow";
-      style = "cur";
-    };
-    diagnostic.error.underline = {
-      color = "red";
-      style = "cur";
-    };
-    diagnostic.unnecessary = { modifiers = [ "dim" ]; };
-    diagnostic.deprecate = { modifiers = [ "crossed_out" ]; };
 
     info = {
       fg = "blue";
-      modifiers = [ "bold" "italic" ];
+      modifiers = [ "bold" ];
     };
 
     hint = {
       fg = "green";
-      modifiers = [ "bold" "italic" ];
+      modifiers = [ "bold" ];
     };
 
     warning = {
       fg = "yellow";
-      modifiers = [ "bold" "italic" ];
+      modifiers = [ "bold" ];
     };
 
     error = {
       fg = "red";
-      modifiers = [ "bold" "italic" ];
+      modifiers = [ "bold" ];
     };
 
     namespace = { fg = "blue"; };
@@ -295,33 +310,36 @@ let
   };
 
   theme = {
-    inherit fg;
-    inherit bg;
-    background = bg;
-    backgroundLight = colorScheme.lightBg;
-    text = fg;
-    textDark = colorScheme.darkFg;
+    palette = {
+      inherit fg;
+      inherit bg;
 
-    dark = bg;
-    light = fg;
+      lightBg = colorScheme.lightBg;
 
-    default = colorPicker 0;
-    black = colorPicker 1;
-    blue = colorPicker 2;
-    cyan = colorPicker 3;
-    green = colorPicker 4;
-    magenta = colorPicker 5;
-    red = colorPicker 6;
-    white = colorPicker 7;
-    yellow = colorPicker 8;
-    gray = colorPicker 9;
+      text = fg;
+      textDark = colorScheme.darkFg;
 
-    light-black = colorPicker 10;
-    light-blue = colorPicker 11;
-    light-cyan = colorPicker 12;
-    light-green = colorPicker 13;
-    light-magenta = colorPicker 14;
-    light-red = colorPicker 15;
+      dark = bg;
+      light = fg;
+
+      default = colorPicker 0;
+      black = colorPicker 1;
+      blue = colorPicker 2;
+      cyan = colorPicker 3;
+      green = colorPicker 4;
+      magenta = colorPicker 5;
+      red = colorPicker 6;
+      white = colorPicker 7;
+      yellow = colorPicker 8;
+      gray = colorPicker 9;
+
+      light-black = colorPicker 10;
+      light-blue = colorPicker 11;
+      light-cyan = colorPicker 12;
+      light-green = colorPicker 13;
+      light-magenta = colorPicker 14;
+      light-red = colorPicker 15;
+    };
   } // (flattenToml themeSet);
 in {
   options.estera.programs.helix = { enable = mkEnableOption "helix"; };
@@ -338,6 +356,34 @@ in {
             line-number = "relative";
             file-picker.hidden = false;
             end-of-line-diagnostics = "hint";
+
+            lsp = { display-inlay-hints = true; };
+
+            inline-diagnostics = {
+              cursor-line = "warning";
+              other-lines = "info";
+            };
+
+            soft-wrap = {
+              enable = true;
+              max-wrap = 30;
+            };
+
+            statusline = {
+              right = [
+                "diagnostics"
+                "selections"
+                "register"
+                "position"
+                "file-encoding"
+                "file-type"
+              ];
+              mode = {
+                normal = "normal";
+                insert = "insert";
+                select = "select";
+              };
+            };
           };
 
           keys = {
@@ -357,10 +403,19 @@ in {
         languages = {
           language-server.clangd = {
             command = "${pkgs.clang-tools}/bin/clangd";
-            # args = [ "--std=c++17" ];
           };
 
-          language-server.rust-analyzer.config = { check.command = "clippy"; };
+          language-server.rust-analyzer.config = {
+            check.command = "clippy";
+
+            inlayHints = {
+              closingBraceHints.minLines = 6;
+              closureReturnTypeHints.enable = "with_block";
+              bindingModeHints.enable = true;
+              parameterHints.enable = true;
+            };
+          };
+
           language = [
             {
               name = "nix";
