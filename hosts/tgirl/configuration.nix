@@ -10,7 +10,16 @@
   ];
 
   time.timeZone = "Europe/Warsaw";
-  environment.systemPackages = import ./packages.nix pkgs;
+
+  environment = {
+    variables = {
+      DISPLAY = ":0.0";
+      __GL_THREADED_OPTIMIZATIONS = "0";
+    };
+
+    systemPackages = import ./packages.nix pkgs;
+  };
+
   security.polkit.enable = true;
 
   nixpkgs.config = {
@@ -44,8 +53,7 @@
   };
 
   i18n = { defaultLocale = "en_US.UTF-8"; };
-
-  console = { useXkbConfig = true; };
+  console = { keyMap = "pl"; };
 
   services = {
     xserver = {
@@ -54,6 +62,7 @@
         layout = "pl";
         options = "eurosign:e,caps:escape";
       };
+      enable = true;
     };
 
     pipewire = {
@@ -62,12 +71,18 @@
     };
 
     openssh.enable = true;
+
+    vsftpd = {
+      enable = true;
+      localUsers = true;
+      localRoot = "/home/esther/ftp";
+      writeEnable = true;
+    };
   };
 
   users.users.esther = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    # packages = with pkgs; [ ];
     shell = pkgs.bash;
   };
 
@@ -79,7 +94,7 @@
       fish.enable = true;
       rofi.enable = true;
       steam.enable = true;
-      waybar.enable = true;
+      # waybar.enable = true;
       xdg-portal.enable = true;
       niri = {
         enable = true;
@@ -97,12 +112,7 @@
           fi
         '';
 
-        loginStart = ''
-          echo "woof :3"
-          if uwsm check may-start; then
-            exec niri-session
-          fi
-        '';
+        loginStart = "";
       };
       wireshark.enable = true;
       xwayland = {

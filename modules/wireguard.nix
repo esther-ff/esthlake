@@ -20,9 +20,6 @@
 
     publicKey = keys.pub;
     privateKeyFile = keys.priv;
-
-    containerSubnet = "172.16.0.0/24";
-
   in {
     wg0 = {
       address = [ "10.2.0.2/32" ];
@@ -35,6 +32,10 @@
         # Mark packets on the wg0 interface
         wg set wg0 fwmark 51820
 
+        for ip in $(${pkgs.dig} +short mc.hypixel.net); do
+            ${pkgs.iptables}/bin/iptables -I OUTPUT 1 -d $ip -p tcp --dport 25565 -j ACCEPT
+        done
+
         # Forbid anything else which doesn't go through wireguard VPN on
         # ipV4 and ipV6
         ${pkgs.iptables}/bin/iptables -A OUTPUT \
@@ -43,14 +44,42 @@
           -m mark ! --mark $(wg show wg0 fwmark) \
           -m addrtype ! --dst-type LOCAL \
           -j REJECT
+
         ${pkgs.iptables}/bin/ip6tables -A OUTPUT \
           ! -o wg0 \
           -m mark ! --mark $(wg show wg0 fwmark) \
           -m addrtype ! --dst-type LOCAL \
           -j REJECT
-        ${pkgs.iptables}/bin/iptables -I OUTPUT \
-        -s ${containerSubnet} -d ${containerSubnet} \
-        -j ACCEPT
+
+        # ${pkgs.iptables}/bin/iptables -t mangle \
+        # -I OUTPUT 1\
+        # -p tcp \
+        # --dport 25565 \
+        # -j ACCEPT
+
+        # ${pkgs.iptables}/bin/iptables -t mangle \
+        # -I OUTPUT 1\
+        # -p tcp \
+        # --sport 25565 \
+        # -j ACCEPT
+
+        # ${pkgs.iptables}/bin/iptables -t mangle \
+        # -I OUTPUT 1\
+        # -p udp \
+        # --dport 25565 \
+        # -j ACCEPT
+
+        # ${pkgs.iptables}/bin/iptables -t mangle \
+        # -I OUTPUT 1\
+        # -p udp \
+        # --dport 25565 \
+        # -j ACCEPT
+
+        # ${pkgs.iptables}/bin/iptables -A OUTPUT \
+        # -m mark \
+        # -- mark 10000 -j ACCEPT
+
+
       '';
 
       postDown = ''

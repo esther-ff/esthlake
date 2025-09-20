@@ -92,7 +92,7 @@
   networking = {
     hostName = "tgirl";
     useNetworkd = true;
-    firewall.allowedTCPPorts = [ 22 80 443 ];
+    firewall.allowedTCPPorts = [ 22 80 443 21 20 ];
 
     nat = {
       enable = true;

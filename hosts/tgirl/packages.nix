@@ -1,6 +1,10 @@
 pkgs:
 with pkgs; [
   dunst
+  libreoffice
+  openjdk
+  dig
+  prismlauncher
   xwayland-satellite
   wireshark
   cargo-mommy
@@ -17,13 +21,10 @@ with pkgs; [
   pciutils
   rustup
   pavucontrol
-  libgcc
-  gcc
-  waybar
   nodejs
-  uwsm
   grc
   nixfmt-rfc-style
+  lld
   nil
   bun
   firefox

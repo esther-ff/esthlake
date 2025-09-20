@@ -12,18 +12,21 @@ in {
     home-manager.users.${user} = {
       programs.fish = {
         enable = true;
-        interactiveShellInit = ''
-          function fish_greeting
-            uname -nrv
-            echo
-            echo "awrff wrff woof bark bark wrff arf arf"
-            date
-          end
+        interactiveShellInit = builtins.concatStringsSep "\n" [
+          ''
+            function fish_greeting
+              uname -nrv
+              echo
+              echo "awrff wrff woof bark bark wrff arf arf"
+              date
+            end
 
-          set -g fish_greeting
+            set -g fish_greeting
 
-          set -x PATH "$HOME/.npm_packages/bin/" $PATH
-        '';
+            set -x PATH "$HOME/.npm_packages/bin/" $PATH
+          ''
+          (builtins.readFile ../assets/prompt.fish)
+        ];
 
         shellAbbrs = { projs = "cd /data/git"; };
 

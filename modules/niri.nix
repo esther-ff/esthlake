@@ -41,8 +41,9 @@ in {
     home-manager.users.${user} = {
       programs.niri = with niri.actions; {
         package = pkgs.niri-stable;
-        # enable = true;
         settings = {
+          input.keyboard = { xkb = { layout = "pl"; }; };
+
           window-rules = [{
             matches = [{ title = "Dunst"; }];
             open-floating = true;
@@ -51,8 +52,10 @@ in {
 
           spawn-at-startup = [
             { command = [ "firefox" ]; }
-            { command = [ "swaybg" "-i" pathToWallpaper ]; }
-            { command = [ "waybar" ]; }
+            {
+              command = [ "swaybg" "-i" pathToWallpaper ];
+            }
+            # { command = [ "waybar" ]; }
           ] ++ lib.optional cfgXwayland {
             command = [ "xwayland-satellite" "&" ];
           };
@@ -64,6 +67,7 @@ in {
             };
             shadow.enable = true;
           };
+
           binds = {
             "Alt+Q".action = spawn "alacritty";
             "Alt+D".action = spawn "rofi" "-show" "drun";

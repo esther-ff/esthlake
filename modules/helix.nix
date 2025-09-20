@@ -154,9 +154,9 @@ let
     attribute = { main.fg = "magenta"; };
 
     type = {
-      main.fg = "blue";
+      main.fg = "cyan";
 
-      builtin = { fg = "blue"; };
+      builtin = { fg = "cyan"; };
       enum.variant = { fg = "blue"; };
     };
 
@@ -258,21 +258,43 @@ let
     };
 
     diagnostic = {
-      info.underline = {
-        color = "blue";
-        style = "cur";
+      info = {
+        underline = {
+          color = "blue";
+          style = "curl";
+        };
+
+        bg = "bg";
+        fg = "fg";
       };
-      hint.underline = {
-        color = "green";
-        style = "cur";
+      hint = {
+        underline = {
+          color = "green";
+          style = "curl";
+        };
+
+        bg = "bg";
+        fg = "fg";
+
       };
-      warning.underline = {
-        color = "yellow";
-        style = "cur";
+      warning = {
+        underline = {
+          color = "yellow";
+          style = "curl";
+        };
+
+        bg = "bg";
+        fg = "fg";
       };
-      error.underline = {
-        color = "red";
-        style = "cur";
+
+      error = {
+        underline = {
+          color = "red";
+          style = "curl";
+        };
+
+        bg = "bg";
+        fg = "fg";
       };
 
       unnecessary = { modifiers = [ "dim" ]; };
@@ -357,7 +379,7 @@ in {
             file-picker.hidden = false;
             end-of-line-diagnostics = "hint";
 
-            lsp = { display-inlay-hints = true; };
+            # lsp = { display-inlay-hints = true; };
 
             inline-diagnostics = {
               cursor-line = "warning";
@@ -408,12 +430,11 @@ in {
           language-server.rust-analyzer.config = {
             check.command = "clippy";
 
-            inlayHints = {
-              closingBraceHints.minLines = 6;
-              closureReturnTypeHints.enable = "with_block";
-              bindingModeHints.enable = true;
-              parameterHints.enable = true;
-            };
+            # inlayHints = {
+            # closingBraceHints.minLines = 6;
+            # bindingModeHints.enable = true;
+            # parameterHints.enable = true;
+            # };
           };
 
           language = [
