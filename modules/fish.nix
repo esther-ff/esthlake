@@ -22,8 +22,8 @@ in {
             end
 
             set -g fish_greeting
-
             set -x PATH "$HOME/.npm_packages/bin/" $PATH
+            set -x DISPLAY ":0.0"
           ''
           (builtins.readFile ../assets/prompt.fish)
         ];
@@ -45,7 +45,6 @@ in {
           nxr = "sudo nixos-rebuild switch --flake ${path}#tgirl";
           nixcfg = "hx ${path}";
           snooze = "poweroff";
-
         };
 
         plugins = [

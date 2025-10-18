@@ -372,7 +372,7 @@ in {
         enable = true;
         themes = { montrouge = theme; };
         settings = {
-          theme = "montrouge";
+          theme = "gruber-darker";
           editor = {
             completion-timeout = 5;
             line-number = "relative";

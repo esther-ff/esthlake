@@ -2,6 +2,12 @@
   # Lonely...!
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  documentation = {
+    enable = true;
+    dev.enable = true;
+    man.enable = true;
+  };
+
   fonts.packages = with pkgs; [
     fira-code
     fira-code-symbols
@@ -15,6 +21,8 @@
     variables = {
       DISPLAY = ":0.0";
       __GL_THREADED_OPTIMIZATIONS = "0";
+      EDITOR = "hx";
+      VISUAL = "hx";
     };
 
     systemPackages = import ./packages.nix pkgs;
@@ -63,6 +71,10 @@
         options = "eurosign:e,caps:escape";
       };
       enable = true;
+      displayManager = {
+        lightdm.enable = false;
+        startx.enable = false;
+      };
     };
 
     pipewire = {
@@ -98,7 +110,7 @@
       xdg-portal.enable = true;
       niri = {
         enable = true;
-        wallpaper = "flamingo.png";
+        wallpaper = "konata.jpg";
         wallpaperSource = ../../assets/wallpapers;
       };
       helix.enable = true;
@@ -112,7 +124,12 @@
           fi
         '';
 
-        loginStart = "";
+        loginStart = ''
+          if [ "$XDG_VTNR" -eq 1 ] && [ -z "$WAYLAND_DISPLAY" ]; then
+              systemctl --user import-environment DISPLAY
+              exec niri-session -l
+          fi
+        '';
       };
       wireshark.enable = true;
       xwayland = {

@@ -5,8 +5,8 @@ _: {
     target = "x86_64-linux";
     pronouns = [ "she" "they" ]; # just like me!
     gender = {
-      gay = true;
-      libre = "yees";
+      transed = true;
+      libre = true;
       queen = 100;
     };
   };

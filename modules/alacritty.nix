@@ -40,6 +40,7 @@ in {
           };
 
           font = {
+            size = 12.0;
             bold = {
               family = "Fira Code";
               style = "Bold";

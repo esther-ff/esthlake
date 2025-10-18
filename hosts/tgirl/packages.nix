@@ -1,9 +1,12 @@
 pkgs:
 with pkgs; [
   dunst
+  thunderbird
+  signal-desktop
+  grc
+  gcc
   libreoffice
   openjdk
-  dig
   prismlauncher
   xwayland-satellite
   wireshark
@@ -12,18 +15,12 @@ with pkgs; [
   linux-firmware
   git
   pipewire
-  inetutils
-  ethtool
   helix
   alacritty
   ntfs3g
-  lshw
-  pciutils
   rustup
   pavucontrol
-  nodejs
-  grc
-  nixfmt-rfc-style
+  nixfmt-classic
   lld
   nil
   bun
