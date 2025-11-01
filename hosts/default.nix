@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ inputs, lib, chaotic, ... }:
 let
   inherit (inputs) self;
   inherit (lib) nixosSystem map listToAttrs;
@@ -8,7 +8,15 @@ let
   mkSystem = extra: directory:
     nixosSystem {
       system = null;
-      modules = [ ./common/core ../modules directory ] ++ extra;
+      modules = [
+        ./common/core
+        ../modules
+        directory
+        chaotic.nixosModules.default
+        # chaotic.nixosModules.nyx-cache
+        # chaotic.nixosModules.nyx-overlay
+        # chaotic.nixosModules.nyx-registry
+      ] ++ extra;
       specialArgs = { inherit inputs lib self; };
     };
 

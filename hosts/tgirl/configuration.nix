@@ -1,6 +1,9 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, lib, ... }: {
   # Lonely...!
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  system.modulesTree =
+    [ (lib.getOutput "modules" pkgs.linuxPackages_cachyos-lto.kernel) ];
 
   documentation = {
     enable = true;
@@ -12,7 +15,7 @@
     fira-code
     fira-code-symbols
     noto-fonts
-    noto-fonts-emoji
+    noto-fonts-color-emoji
   ];
 
   time.timeZone = "Europe/Warsaw";
@@ -40,6 +43,7 @@
       enable = true;
       enableSSHSupport = true;
     };
+
   };
 
   systemd = {

@@ -1,10 +1,22 @@
-{ config, lib, modulesPath, ... }:
+{ config, lib, pkgs, ... }:
 
 {
-  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   boot = {
+    supportedFilesystems = lib.mkForce [ "btrfs" "vfat" ];
+    kernelPackages = pkgs.linuxPackages_cachyos-lto;
+    kernelModules = lib.mkForce [
+      "kvm-amd"
+      "nvidia"
+      "nvidia_modeset"
+      "nvidia_drm"
+      "nvidia_uvm"
+      "btrfs"
+    ];
+
     initrd = {
+      preDeviceCommands = "";
+      kernelModules = lib.mkForce [ "btrfs" ];
       availableKernelModules = [
         "nvidia"
         "nvidia_modeset"
@@ -18,22 +30,24 @@
         "sd_mod"
         "sr_mod"
       ];
-      kernelModules = [ ];
+      supportedFilesystems = lib.mkForce [ "btrfs" "vfat" ];
+      includeDefaultModules = false;
     };
 
-    kernelModules =
-      [ "kvm-amd" "nvidia" "nvidia_modeset" "nvidia_drm" "nvidia_uvm" ];
+    # extraModulePackages = with config.boot.kernelPackages; [ r8168 ];
+    # blacklistedKernelModules = [ "r8169" ];
+
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
 
     extraModprobeConfig = ''
       options nvidia_drm fbdev=1 modeset=1
     '';
   };
 
-  swapDevices = [ ];
-
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.eno1.useDHCP = lib.mkDefault true;
-
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   hardware = {
@@ -43,8 +57,9 @@
       powerManagement.finegrained = false;
       open = true;
       nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      package = pkgs.linuxPackages_cachyos-lto.nvidiaPackages.beta;
     };
+
     graphics = {
       enable = true;
       enable32Bit = true;
@@ -77,15 +92,6 @@
     "/boot" = {
       device = "/dev/disk/by-uuid/FA5D-A0F8";
       fsType = "vfat";
-    };
-  };
-
-  boot = {
-    # extraModulePackages = with config.boot.kernelPackages; [ r8168 ];
-    # blacklistedKernelModules = [ "r8169" ];
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
     };
   };
 

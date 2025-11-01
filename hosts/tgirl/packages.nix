@@ -1,6 +1,7 @@
 pkgs:
 with pkgs; [
   dunst
+  man-pages
   thunderbird
   signal-desktop
   grc
@@ -12,7 +13,7 @@ with pkgs; [
   wireshark
   cargo-mommy
   swaybg
-  linux-firmware
+  obsidian
   git
   pipewire
   helix
@@ -21,10 +22,10 @@ with pkgs; [
   rustup
   pavucontrol
   nixfmt-classic
+  rust-analyzer
   lld
   nil
   bun
   firefox
-  rofi-wayland
   kdePackages.okular
 ]
