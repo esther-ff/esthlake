@@ -26,6 +26,8 @@
       __GL_THREADED_OPTIMIZATIONS = "0";
       EDITOR = "hx";
       VISUAL = "hx";
+      NIXOS_OZONE_WL = "1";
+      ELECTRON_OZONE_PLATFORM_HINT = "wayland";
     };
 
     systemPackages = import ./packages.nix pkgs;
@@ -74,7 +76,6 @@
         layout = "pl";
         options = "eurosign:e,caps:escape";
       };
-      enable = true;
       displayManager = {
         lightdm.enable = false;
         startx.enable = false;

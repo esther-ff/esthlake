@@ -2,6 +2,25 @@
 
 {
 
+  hardware = {
+    nvidia = {
+      modesetting.enable = true;
+      powerManagement.enable = true;
+      powerManagement.finegrained = false;
+      open = true;
+      nvidiaSettings = true;
+      package = pkgs.linuxPackages_cachyos-lto.nvidiaPackages.beta;
+    };
+
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+
+    cpu.amd.updateMicrocode =
+      lib.mkDefault config.hardware.enableRedistributableFirmware;
+  };
+
   boot = {
     supportedFilesystems = lib.mkForce [ "btrfs" "vfat" ];
     kernelPackages = pkgs.linuxPackages_cachyos-lto;
@@ -49,25 +68,6 @@
 
   networking.useDHCP = lib.mkDefault true;
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-
-  hardware = {
-    nvidia = {
-      modesetting.enable = true;
-      powerManagement.enable = true;
-      powerManagement.finegrained = false;
-      open = true;
-      nvidiaSettings = true;
-      package = pkgs.linuxPackages_cachyos-lto.nvidiaPackages.beta;
-    };
-
-    graphics = {
-      enable = true;
-      enable32Bit = true;
-    };
-
-    cpu.amd.updateMicrocode =
-      lib.mkDefault config.hardware.enableRedistributableFirmware;
-  };
 
   fileSystems = {
     "/" = {

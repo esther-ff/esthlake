@@ -16,6 +16,7 @@ in {
           xdg-desktop-portal
           xdg-desktop-portal-wlr
         ];
+        wlr.enable = true;
         config = { common.default = "*"; };
       };
     };
