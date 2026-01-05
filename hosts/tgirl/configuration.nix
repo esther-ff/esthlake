@@ -1,9 +1,20 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, inputs, ... }: {
   # Lonely...!
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   system.modulesTree =
     [ (lib.getOutput "modules" pkgs.linuxPackages_cachyos-lto.kernel) ];
+
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu = {
+      ovmf.enable = true;
+      package = pkgs.qemu_kvm;
+      swtpm.enable = true;
+    };
+    onBoot = "ignore";
+    onShutdown = "shutdown";
+  };
 
   documentation = {
     enable = true;
@@ -16,6 +27,8 @@
     fira-code-symbols
     noto-fonts
     noto-fonts-color-emoji
+    nerd-fonts.fira-code
+    nerd-fonts.monaspace
   ];
 
   time.timeZone = "Europe/Warsaw";
@@ -28,9 +41,12 @@
       VISUAL = "hx";
       NIXOS_OZONE_WL = "1";
       ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+      XDG_SESSION_DESKTOP = "niri";
+      MOZ_ENABLE_WAYLAND = "1";
     };
 
-    systemPackages = import ./packages.nix pkgs;
+    systemPackages = (import ./packages.nix pkgs)
+      ++ [ inputs.ironbar.packages.x86_64-linux.default ];
   };
 
   security.polkit.enable = true;
@@ -45,6 +61,13 @@
       enable = true;
       enableSSHSupport = true;
     };
+
+    ssh.extraConfig = ''
+      Host codeberg.org
+          HostName codeberg.org
+          User git
+          IdentityFile ~/.ssh/id_ed25519_codeberg
+    '';
 
   };
 
@@ -85,6 +108,7 @@
     pipewire = {
       enable = true;
       pulse.enable = true;
+      wireplumber.enable = true;
     };
 
     openssh.enable = true;
@@ -99,7 +123,7 @@
 
   users.users.esther = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "libvirtd" "kvm" ];
     shell = pkgs.bash;
   };
 
@@ -115,7 +139,7 @@
       xdg-portal.enable = true;
       niri = {
         enable = true;
-        wallpaper = "konata.jpg";
+        wallpaper = "windows11.jpg";
         wallpaperSource = ../../assets/wallpapers;
       };
       helix.enable = true;

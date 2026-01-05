@@ -21,7 +21,7 @@ let
   cfg = config.estera.programs.helix;
 
   inherit (config.estera.flake.system) user;
-  inherit (lib.estera) colorPicker flattenToml colorScheme;
+  inherit (lib.estera) flattenToml colorScheme;
   inherit (colorScheme) fg bg;
   inherit (lib) mkIf;
   inherit (lib.options) mkEnableOption;
@@ -149,18 +149,18 @@ let
     };
 
     property = { main.fg = "text"; }; # regex
-    special = { main.fg = "cyan"; };
+    special = { main.fg = "yellow"; };
 
     attribute = { main.fg = "magenta"; };
 
     type = {
-      main.fg = "cyan";
+      main.fg = "red";
 
-      builtin = { fg = "cyan"; };
+      builtin = { fg = "red"; };
       enum.variant = { fg = "blue"; };
     };
 
-    constructor = { main.fg = "blue"; };
+    constructor = { main.fg = "yellow"; };
 
     constant = {
       main.fg = "green";
@@ -188,19 +188,18 @@ let
     };
 
     comment = {
-      main.fg = "darkFg";
       modifiers = [ "bold" ];
 
       line = {
-        fg = "darkFg";
+        fg = "gray";
         modifiers = [ "bold" ];
       };
       block = {
-        fg = "darkFg";
+        fg = "gray";
         modifiers = [ "bold" ];
       };
       block.documentation = {
-        fg = "darkFg";
+        fg = "gray";
         modifiers = [ "bold" "italic" ];
       };
     };
@@ -208,9 +207,13 @@ let
     variable = {
       fg = "text";
 
-      builtin = { fg = "cyan"; };
-      parameter = { fg = "magenta"; };
-      other.member = { fg = "text"; };
+      builtin = {
+        fg = "cyan";
+        modifier = [ "bold" ];
+      };
+
+      parameter = { fg = "text"; };
+      other.member = { fg = "green"; };
     };
 
     label = { fg = "cyan"; };
@@ -218,7 +221,7 @@ let
     punctuation = {
       main.fg = "text";
       delimiter = { fg = "blue"; };
-      bracket = { fg = "blue"; };
+      bracket = { fg = "white"; };
     };
 
     keyword = {
@@ -232,6 +235,7 @@ let
         return = { fg = "green"; };
         exception = { };
       };
+      storage = { type.fg = "yellow"; };
       operator = { fg = "green"; }; # `or`, `and`, `in`.
       directive = {
         fg = "green";
@@ -248,8 +252,8 @@ let
       main.fg = "cyan";
       builtin = { fg = "cyan"; };
       method = { fg = "cyan"; }; # Class / Struct methods.
-      macro = { fg = "cyan"; };
-      special = { fg = "cyan"; }; # Preprocessor in C.
+      macro = { fg = "red"; };
+      special = { fg = "yellow"; }; # Preprocessor in C.
     };
 
     tag = {
@@ -265,7 +269,6 @@ let
         };
 
         bg = "bg";
-        fg = "fg";
       };
       hint = {
         underline = {
@@ -274,7 +277,6 @@ let
         };
 
         bg = "bg";
-        fg = "fg";
 
       };
       warning = {
@@ -284,7 +286,6 @@ let
         };
 
         bg = "bg";
-        fg = "fg";
       };
 
       error = {
@@ -294,7 +295,6 @@ let
         };
 
         bg = "bg";
-        fg = "fg";
       };
 
       unnecessary = { modifiers = [ "dim" ]; };
@@ -332,35 +332,35 @@ let
   };
 
   theme = {
-    palette = {
+    palette = rec {
       inherit fg;
       inherit bg;
 
-      lightBg = colorScheme.lightBg;
+      lightBg = colorScheme.bg;
 
       text = fg;
-      textDark = colorScheme.darkFg;
+      textDark = colorScheme.fg;
 
       dark = bg;
       light = fg;
 
-      default = colorPicker 0;
-      black = colorPicker 1;
-      blue = colorPicker 2;
-      cyan = colorPicker 3;
-      green = colorPicker 4;
-      magenta = colorPicker 5;
-      red = colorPicker 6;
-      white = colorPicker 7;
-      yellow = colorPicker 8;
-      gray = colorPicker 9;
+      default = fg;
+      black = colorScheme.black;
+      blue = colorScheme.blue;
+      cyan = colorScheme.blue;
+      green = colorScheme.green;
+      magenta = colorScheme.orange;
+      red = colorScheme.red;
+      white = colorScheme.white;
+      yellow = colorScheme.yellow;
+      gray = colorScheme.gray;
 
-      light-black = colorPicker 10;
-      light-blue = colorPicker 11;
-      light-cyan = colorPicker 12;
-      light-green = colorPicker 13;
-      light-magenta = colorPicker 14;
-      light-red = colorPicker 15;
+      light-black = black;
+      light-blue = blue;
+      light-cyan = blue;
+      light-green = green;
+      light-magenta = magenta;
+      light-red = red;
     };
   } // (flattenToml themeSet);
 in {
@@ -372,7 +372,7 @@ in {
         enable = true;
         themes = { montrouge = theme; };
         settings = {
-          theme = "gruber-darker";
+          theme = "montrouge";
           editor = {
             completion-timeout = 5;
             line-number = "relative";
@@ -429,6 +429,7 @@ in {
 
           language-server.rust-analyzer.config = {
             check.command = "clippy";
+            # check.allTargets = false;
 
             # inlayHints = {
             # closingBraceHints.minLines = 6;

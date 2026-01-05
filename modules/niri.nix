@@ -50,19 +50,18 @@ in {
           }];
           prefer-no-csd = true;
 
-          spawn-at-startup = [
-            { command = [ "firefox" ]; }
-            {
-              command = [ "swaybg" "-i" pathToWallpaper ];
-            }
-            # { command = [ "waybar" ]; }
-          ] ++ lib.optional cfgXwayland {
-            command = [ "xwayland-satellite" "&" ];
-          };
+          spawn-at-startup = map (cmd: {
+            command = builtins.filter (a: a != [ ]) (builtins.split " " cmd);
+          }) ([
+            "firefox"
+            "swaybg -i ${pathToWallpaper}"
+            "ironbar"
+
+          ] ++ lib.optional cfgXwayland "xwayland-satellite");
 
           layout = {
             focus-ring = {
-              active.color = "rgb(181 134 232)";
+              active.color = "rgb(219, 188, 127)";
               width = 5;
             };
             shadow.enable = true;

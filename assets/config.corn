@@ -1,0 +1,28 @@
+let {
+    $workspaces = { type = "workspaces" }
+
+    $focused = { type = "focused" icon_size = 12 show_icon = false }
+    $volume = {
+      type = "volume"
+      format = "{icon} {percentage}%"
+      max_volume = 100
+      truncate = "end"
+      icons.volume_high = "󰕾"
+      icons.volume_medium = "󰖀"
+      icons.volume_low = "󰕿"
+      icons.muted = "󰝟"
+    }
+    $tray = { type = "tray" }
+    $clock = { type = "clock" format = " %d-%m-%Y %H:%M:%S" justify = "center" }
+    $sys_info = {
+        type = "sys_info"
+        format = [": {memory_free:1} / {memory_used:1} GB ({memory_total} GB)"]
+    }
+} in {
+    position = "bottom"
+    height = 16
+
+    start = [ $workspaces ]
+    center = [ $focused ]
+    end = [ $volume $sys_info $tray $clock ]
+}

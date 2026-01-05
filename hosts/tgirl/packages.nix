@@ -1,6 +1,11 @@
 pkgs:
 with pkgs; [
   dunst
+  bottles
+  swaylock
+  just
+  python3
+  virt-manager
   man-pages
   thunderbird
   signal-desktop
@@ -10,6 +15,8 @@ with pkgs; [
   openjdk
   prismlauncher
   xwayland-satellite
+  xdg-desktop-portal
+  xdg-desktop-portal-gtk
   wireshark
   cargo-mommy
   swaybg
@@ -28,4 +35,5 @@ with pkgs; [
   bun
   firefox
   kdePackages.okular
+  krita
 ]

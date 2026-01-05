@@ -48,6 +48,7 @@
         "usbhid"
         "sd_mod"
         "sr_mod"
+        "kvm_amd"
       ];
       supportedFilesystems = lib.mkForce [ "btrfs" "vfat" ];
       includeDefaultModules = false;
