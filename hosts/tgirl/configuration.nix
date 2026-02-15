@@ -1,14 +1,22 @@
-{ config, pkgs, lib, inputs, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
+{
   # Lonely...!
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
-  system.modulesTree =
-    [ (lib.getOutput "modules" pkgs.linuxPackages_cachyos-lto.kernel) ];
+  # system.modulesTree = [ (lib.getOutput "modules" pkgs.linuxPackages_cachyos-lto.kernel) ];
 
   virtualisation.libvirtd = {
     enable = true;
     qemu = {
-      ovmf.enable = true;
       package = pkgs.qemu_kvm;
       swtpm.enable = true;
     };
@@ -33,6 +41,20 @@
 
   time.timeZone = "Europe/Warsaw";
 
+  sops =
+    let
+      keyFilePath = "/home/esther/.config/sops/age/keys.txt";
+    in
+    {
+      age.keyFile = keyFilePath;
+      defaultSopsFile = ../../secrets.yaml;
+      secrets = {
+        mullvad_private_key = { };
+
+        bigeon_discord_token = { };
+      };
+    };
+
   environment = {
     variables = {
       DISPLAY = ":0.0";
@@ -45,8 +67,7 @@
       MOZ_ENABLE_WAYLAND = "1";
     };
 
-    systemPackages = (import ./packages.nix pkgs)
-      ++ [ inputs.ironbar.packages.x86_64-linux.default ];
+    systemPackages = (import ./packages.nix pkgs) ++ [ inputs.ironbar.packages.x86_64-linux.default ];
   };
 
   security.polkit.enable = true;
@@ -69,6 +90,15 @@
           IdentityFile ~/.ssh/id_ed25519_codeberg
     '';
 
+    bigeon = {
+      enable = true;
+      botToken = "/run/secrets/bigeon_discord_token";
+      server = "mc.hypixel.net";
+      minecraftUsername = "BallinBridge";
+      enableService = true;
+      channelName = "guild-chat";
+      discordServerId = 1286687362281242736;
+    };
   };
 
   systemd = {
@@ -89,8 +119,12 @@
     };
   };
 
-  i18n = { defaultLocale = "en_US.UTF-8"; };
-  console = { keyMap = "pl"; };
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+  };
+  console = {
+    keyMap = "pl";
+  };
 
   services = {
     xserver = {
@@ -123,7 +157,11 @@
 
   users.users.esther = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "libvirtd" "kvm" ];
+    extraGroups = [
+      "wheel"
+      "libvirtd"
+      "kvm"
+    ];
     shell = pkgs.bash;
   };
 
@@ -168,4 +206,3 @@
     };
   };
 }
-

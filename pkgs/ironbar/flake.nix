@@ -4,21 +4,28 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   };
 
-  outputs = { self, nixpkgs, naersk }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      naersk,
+    }:
     let
-      everySystem = attr:
-        builtins.foldl' (accum: elem: accum // { ${elem} = (attr elem); }) { };
-    in {
-      packages = everySystem (system:
+      everySystem = attr: builtins.foldl' (accum: elem: accum // { ${elem} = (attr elem); }) { };
+    in
+    {
+      packages = everySystem (
+        system:
         let
           pkgs = import nixpkgs { inherit system; };
           naersk' = pkgs.callPackage naersk { };
-        in {
+        in
+        {
           default = naersk'.buildPackage {
             src = pkgs.fetchFromGitHub {
               owner = "JakeStanger";
               repo = "ironbar";
-              hash = "sha256-lkRs3aru9dkMHWw6guQc6BvPe2BjYGi6jEt2XYoNyz8=";
+              hash = "sha256-kSIy+WSKodVW81VevZcyCPu5qBsyBsBdFrj3KYvr2BQ=";
               rev = "master";
             };
             release = true;
@@ -39,14 +46,11 @@
             ];
             postInstall = ''
               mv $out/bin/ironbar $out/bin/.ironbar-wrapped
-              echo "$out/bin/.ironbar-wrapped --debug --config ${
-                ../../assets/config.corn
-              } --theme ${
-                ../../assets/style.css
-              } >/tmp/ironbar.log 2>/tmp/ironbar.err" > $out/bin/ironbar
+              echo "$out/bin/.ironbar-wrapped --config ${../../assets/config.corn} --theme ${../../assets/style.css}" > $out/bin/ironbar
               chmod +x $out/bin/ironbar
             '';
           };
-        }) [ "x86_64-linux" ];
+        }
+      ) [ "x86_64-linux" ];
     };
 }

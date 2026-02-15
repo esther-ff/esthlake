@@ -9,6 +9,7 @@ in {
   options.estera.programs.fish = { enable = mkEnableOption "fish"; };
 
   config = lib.modules.mkIf cfg.enable {
+    programs.fish.enable = true;
     home-manager.users.${user} = {
       programs.fish = {
         enable = true;
@@ -45,6 +46,7 @@ in {
           nxr = "sudo nixos-rebuild switch --flake ${path}#tgirl";
           nixcfg = "hx ${path}";
           snooze = "poweroff";
+          nxd = "nix develop -c ${pkgs.fish}/bin/fish";
         };
 
         plugins = [

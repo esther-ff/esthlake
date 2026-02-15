@@ -1,1 +1,0 @@
-{ imports = [ ./bigeon-bridge.nix ]; }

@@ -14,7 +14,7 @@
     # keys = determineWhichKeys 1;
 
     keys = {
-      priv = "/etc/mullvad-key";
+      priv = "/run/secrets/mullvad_private_key";
       pub = "DVui+5aifNFRIVDjH3v2y+dQ+uwI+HFZOd21ajbEpBo=";
     };
     serverIp = "185.65.134.82";

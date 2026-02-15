@@ -1,15 +1,19 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
-
   hardware = {
     nvidia = {
       modesetting.enable = true;
       powerManagement.enable = true;
       powerManagement.finegrained = false;
-      open = true;
+      open = false;
       nvidiaSettings = true;
-      package = pkgs.linuxPackages_cachyos-lto.nvidiaPackages.beta;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
     };
 
     graphics = {
@@ -17,13 +21,15 @@
       enable32Bit = true;
     };
 
-    cpu.amd.updateMicrocode =
-      lib.mkDefault config.hardware.enableRedistributableFirmware;
+    cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
 
   boot = {
-    supportedFilesystems = lib.mkForce [ "btrfs" "vfat" ];
-    kernelPackages = pkgs.linuxPackages_cachyos-lto;
+    supportedFilesystems = lib.mkForce [
+      "btrfs"
+      "vfat"
+    ];
+    kernelPackages = pkgs.linuxPackages_xanmod_latest;
     kernelModules = lib.mkForce [
       "kvm-amd"
       "nvidia"
@@ -50,7 +56,10 @@
         "sr_mod"
         "kvm_amd"
       ];
-      supportedFilesystems = lib.mkForce [ "btrfs" "vfat" ];
+      supportedFilesystems = lib.mkForce [
+        "btrfs"
+        "vfat"
+      ];
       includeDefaultModules = false;
     };
 
@@ -99,7 +108,13 @@
   networking = {
     hostName = "tgirl";
     useNetworkd = true;
-    firewall.allowedTCPPorts = [ 22 80 443 21 20 ];
+    firewall.allowedTCPPorts = [
+      22
+      80
+      443
+      21
+      20
+    ];
 
     nat = {
       enable = true;

@@ -1,6 +1,9 @@
-pkgs:
-with pkgs; [
+pkgs: with pkgs; [
   dunst
+  zellij
+  # zls
+  zerotierone
+  zig
   bottles
   swaylock
   just
@@ -28,7 +31,7 @@ with pkgs; [
   ntfs3g
   rustup
   pavucontrol
-  nixfmt-classic
+  nixfmt
   rust-analyzer
   lld
   nil

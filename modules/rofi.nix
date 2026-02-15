@@ -20,7 +20,7 @@ in {
         enable = true;
         font = "FiraCode 14";
         location = "center";
-        package = pkgs.rofi-wayland;
+        package = pkgs.rofi;
         # modes = [ "drun" ];
 
         theme = let

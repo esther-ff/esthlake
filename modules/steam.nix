@@ -1,11 +1,16 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  ...
+}:
 let
   inherit (lib.modules) mkIf;
   inherit (lib.options) mkEnableOption mkOption;
   inherit (lib) types;
 
   cfg = config.estera.programs.steam;
-in {
+in
+{
   options.estera.programs.steam = {
     enable = mkEnableOption "steam";
 
@@ -16,8 +21,7 @@ in {
     };
     localNetworkGameTransfers = mkOption {
       type = types.bool;
-      description =
-        "opens ports in the firewall for steam's local network game transfers";
+      description = "opens ports in the firewall for steam's local network game transfers";
       default = false;
     };
     dedicatedServers = mkOption {
@@ -30,6 +34,7 @@ in {
   config = mkIf cfg.enable {
     programs.steam = {
       enable = true;
+      gamescopeSession.enable = true;
 
       remotePlay.openFirewall = cfg.remotePlay;
       dedicatedServer.openFirewall = cfg.dedicatedServers;

@@ -1,14 +1,17 @@
 { config, lib, ... }:
 let
-  inherit (lib.estera) colorPicker colorScheme;
+  inherit (lib.estera) colorScheme;
   inherit (lib.options) mkEnableOption;
   inherit (config.estera.flake.system) user;
 
   colors = lib.estera.colorScheme;
 
   cfg = config.estera.programs.alacritty;
-in {
-  options.estera.programs.alacritty = { enable = mkEnableOption "alacritty"; };
+in
+{
+  options.estera.programs.alacritty = {
+    enable = mkEnableOption "alacritty";
+  };
 
   config = lib.modules.mkIf cfg.enable {
     home-manager.users.${user} = {
@@ -18,7 +21,7 @@ in {
 
           window = {
             padding = rec {
-              x = 6;
+              x = 0;
               y = x;
             };
           };
@@ -63,4 +66,3 @@ in {
     };
   };
 }
-

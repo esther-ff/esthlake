@@ -23,6 +23,6 @@ let {
     height = 16
 
     start = [ $workspaces ]
-    center = [ $focused ]
+    center = []
     end = [ $volume $sys_info $tray $clock ]
 }

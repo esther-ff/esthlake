@@ -1,16 +1,136 @@
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 let
   cfg = config.estera.programs.niri;
   cfgXwayland = config.estera.programs.xwayland.useSatellite;
 
-  inherit (config.estera.flake.system) user;
   inherit (lib.options) mkEnableOption mkOption;
   inherit (lib) types attrNames;
-  inherit (config.home-manager.users.${user}.lib) niri;
+  inherit (inputs.niri-nix.lib) validatedConfigFor mkNiriKDL;
+  inherit (inputs.niri-nix.packages.${pkgs.stdenv.hostPlatform.system}) niri-unstable;
 
   pathToWallpaper = "${cfg.wallpaperSource}/${cfg.wallpaper}";
 
-in {
+  niriConfig = {
+
+    input.keyboard = {
+      xkb = {
+        layout = "pl";
+      };
+    };
+
+    window-rule = [
+      {
+        match = {
+          _props.title._raw = "\"Dunst\"";
+        };
+        open-floating = true;
+      }
+    ];
+
+    prefer-no-csd = true;
+
+    spawn-at-startup = [
+      [
+        "swaybg"
+        "-i"
+        "${pathToWallpaper}"
+      ]
+      [ "ironbar" ]
+    ]
+    ++ lib.optional cfgXwayland [ "xwayland-satellite" ];
+
+    layout = {
+      focus-ring = {
+        active-color = "rgb(219, 188, 127)";
+        width = 2;
+      };
+    };
+
+    animations = {
+      off = [ ];
+    };
+
+    binds =
+      let
+        spawn = list: { spawn = list; };
+        close-window = {
+          close-window = [ ];
+        };
+        move-column-left = {
+          move-column-left = [ ];
+        };
+        move-column-right = {
+          move-column-right = [ ];
+        };
+        move-column-to-workspace-up = {
+          move-column-to-workspace-up = [ ];
+        };
+        move-column-to-workspace-down = {
+          move-column-to-workspace-down = [ ];
+        };
+        focus-column-left = {
+          focus-column-left = [ ];
+        };
+        focus-column-right = {
+          focus-column-right = [ ];
+        };
+        move-window-up = {
+          move-window-up = [ ];
+        };
+        move-window-down = {
+          move-window-down = [ ];
+        };
+
+        set-column-width = val: { set-column-width = val; };
+        focus-workspace = val: { focus-workspace = val; };
+      in
+      {
+        "Alt+Q" = spawn "alacritty";
+        "Alt+D" = spawn [
+          "rofi"
+          "-show"
+          "drun"
+        ];
+        "Alt+F" = spawn "firefox";
+        "Alt+C" = close-window;
+        "Alt+S" = {
+          screenshot = [ ];
+        };
+
+        "Alt+Shift+W" = move-window-up;
+        "Alt+Shift+S" = move-window-down;
+
+        "Alt+W" = move-column-left;
+        "Alt+A" = move-column-right;
+
+        "Alt+E" = focus-column-left;
+        "Alt+R" = focus-column-right;
+
+        "Alt+Left" = set-column-width "+5%";
+        "Alt+Right" = set-column-width "-5%";
+
+        "Alt+J" = move-column-to-workspace-up;
+        "Alt+K" = move-column-to-workspace-down;
+
+        # workspace keybinds
+      }
+      // builtins.listToAttrs (
+        builtins.map (x: {
+          name = "Alt+${toString x}";
+          value = focus-workspace x;
+
+        }) (builtins.genList (x: x + 1) 9)
+      );
+  };
+
+in
+{
   options.estera.programs.niri = {
     enable = mkEnableOption "niri";
 
@@ -21,88 +141,30 @@ in {
     };
 
     wallpaper = mkOption {
-      description =
-        "file name of the wallpaper image located in assets/wallpapers/";
+      description = "file name of the wallpaper image located in assets/wallpapers/";
       type = types.enum (attrNames (builtins.readDir cfg.wallpaperSource));
       default = null;
     };
   };
 
-  imports = [ inputs.niri.nixosModules.niri ];
+  # imports = [ inputs.niri.nixosModules.niri ];
 
-  config = lib.modules.mkIf cfg.enable {
-    nixpkgs.overlays = [ inputs.niri.overlays.niri ];
-
-    programs.niri = {
-      enable = true;
-      package = pkgs.niri-stable;
-    };
-
-    home-manager.users.${user} = {
-      programs.niri = with niri.actions; {
-        package = pkgs.niri-stable;
-        settings = {
-          input.keyboard = { xkb = { layout = "pl"; }; };
-
-          window-rules = [{
-            matches = [{ title = "Dunst"; }];
-            open-floating = true;
-          }];
-          prefer-no-csd = true;
-
-          spawn-at-startup = map (cmd: {
-            command = builtins.filter (a: a != [ ]) (builtins.split " " cmd);
-          }) ([
-            "firefox"
-            "swaybg -i ${pathToWallpaper}"
-            "ironbar"
-
-          ] ++ lib.optional cfgXwayland "xwayland-satellite");
-
-          layout = {
-            focus-ring = {
-              active.color = "rgb(219, 188, 127)";
-              width = 5;
-            };
-            shadow.enable = true;
-          };
-
-          binds = {
-            "Alt+Q".action = spawn "alacritty";
-            "Alt+D".action = spawn "rofi" "-show" "drun";
-            "Alt+F".action = spawn "firefox";
-            "Alt+C".action = close-window;
-            "Alt+S".action = screenshot;
-
-            "Alt+Shift+W".action = move-window-up;
-            "Alt+Shift+S".action = move-window-down;
-
-            "Alt+W".action = move-column-left;
-            "Alt+A".action = move-column-right;
-
-            "Alt+E".action = focus-column-left;
-            "Alt+R".action = focus-column-right;
-
-            "Alt+Left".action = set-column-width "+10%";
-            "Alt+Right".action = set-column-width "-10%";
-
-            "Alt+J".action = move-column-to-workspace-up;
-            "Alt+K".action = move-column-to-workspace-down;
-
-            # workspace keybinds
-          } // builtins.listToAttrs (builtins.map (x: {
-            name = "Alt+${toString x}";
-            value = { action = focus-workspace x; };
-          }) (builtins.genList (x: x + 1) 9))
-
-          # column keybinds
-          # // builtins.listToAttrs (builtins.map (x: {
-          #   name = "Alt+Shift+${toString x}";
-          #   value = { action = move-column-to-workspace x; };
-          # }) (builtins.genList (x: x + 1) 9));
-          ;
-        };
+  config = lib.modules.mkIf cfg.enable (
+    let
+      builtNiriConfig = pkgs.writeText "niri-config.kdl" (
+        validatedConfigFor niri-unstable (mkNiriKDL niriConfig)
+      );
+    in
+    {
+      nixpkgs.overlays = [ inputs.niri-nix.overlays.niri-nix ];
+      programs.niri = {
+        enable = true;
+        package = pkgs.niri-unstable;
       };
-    };
-  };
+
+      environment.variables = {
+        NIRI_CONFIG = "${builtNiriConfig}";
+      };
+    }
+  );
 }
