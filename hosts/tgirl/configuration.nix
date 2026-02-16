@@ -1,18 +1,25 @@
 {
   config,
   pkgs,
-  lib,
   inputs,
   ...
 }:
 {
-  # Lonely...!
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  nix = {
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
 
-  # system.modulesTree = [ (lib.getOutput "modules" pkgs.linuxPackages_cachyos-lto.kernel) ];
+      substituters = [ "https://cache.nixos.org/" ];
+      trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
+
+      cores = 6;
+      max-jobs = 32;
+    };
+
+  };
 
   virtualisation.libvirtd = {
     enable = true;
@@ -67,7 +74,7 @@
       MOZ_ENABLE_WAYLAND = "1";
     };
 
-    systemPackages = (import ./packages.nix pkgs) ++ [ inputs.ironbar.packages.x86_64-linux.default ];
+    systemPackages = (import ./packages.nix pkgs);
   };
 
   security.polkit.enable = true;
@@ -122,6 +129,7 @@
   i18n = {
     defaultLocale = "en_US.UTF-8";
   };
+
   console = {
     keyMap = "pl";
   };
@@ -173,7 +181,6 @@
       fish.enable = true;
       rofi.enable = true;
       steam.enable = true;
-      # waybar.enable = true;
       xdg-portal.enable = true;
       niri = {
         enable = true;
@@ -194,7 +201,7 @@
         loginStart = ''
           if [ "$XDG_VTNR" -eq 1 ] && [ -z "$WAYLAND_DISPLAY" ]; then
               systemctl --user import-environment DISPLAY
-              exec niri-session -l
+              niri --session
           fi
         '';
       };

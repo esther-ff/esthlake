@@ -39,4 +39,5 @@ pkgs: with pkgs; [
   firefox
   kdePackages.okular
   krita
+  ironbar
 ]

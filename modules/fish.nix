@@ -1,12 +1,20 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.estera.programs.fish;
   path = "/data/git/nixyay";
 
   inherit (config.estera.flake.system) user;
   inherit (lib.options) mkEnableOption;
-in {
-  options.estera.programs.fish = { enable = mkEnableOption "fish"; };
+in
+{
+  options.estera.programs.fish = {
+    enable = mkEnableOption "fish";
+  };
 
   config = lib.modules.mkIf cfg.enable {
     programs.fish.enable = true;
@@ -28,8 +36,6 @@ in {
           ''
           (builtins.readFile ../assets/prompt.fish)
         ];
-
-        shellAbbrs = { projs = "cd /data/git"; };
 
         shellAliases = {
           ctest = "cargo test";

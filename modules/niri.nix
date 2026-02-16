@@ -17,7 +17,6 @@ let
   pathToWallpaper = "${cfg.wallpaperSource}/${cfg.wallpaper}";
 
   niriConfig = {
-
     input.keyboard = {
       xkb = {
         layout = "pl";
