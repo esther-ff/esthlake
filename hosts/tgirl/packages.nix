@@ -1,7 +1,5 @@
 pkgs: with pkgs; [
   dunst
-  # zls
-  zig
   bottles
   swaylock
   just

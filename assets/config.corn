@@ -4,7 +4,7 @@ let {
     $focused = { type = "focused" icon_size = 12 show_icon = false }
     $volume = {
       type = "volume"
-      format = "{icon} {percentage}%"
+      format = "{icon} {percentage}% "
       max_volume = 100
       truncate = "end"
       icons.volume_high = "󰕾"
@@ -23,6 +23,6 @@ let {
     height = 16
 
     start = [ $workspaces ]
-    center = []
+    center = [ ]
     end = [ $volume $sys_info $tray $clock ]
 }
