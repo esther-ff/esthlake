@@ -11,6 +11,7 @@
     ironbar.url = "path:./pkgs/ironbar";
     bigeon.url = "github:esther-ff/uuhbot";
     niri-nix.url = "git+https://codeberg.org/BANanaD3V/niri-nix";
+    helix.url = "github:helix-editor/helix";
   };
 
   outputs =
@@ -21,6 +22,7 @@
       bigeon,
       sops-nix,
       niri-nix,
+      helix,
       ...
     }:
     {
@@ -31,6 +33,7 @@
           bigeon
           sops-nix
           niri-nix
+          helix
           ;
       };
     };

@@ -1,8 +1,6 @@
 pkgs: with pkgs; [
   dunst
-  zellij
   # zls
-  zerotierone
   zig
   bottles
   swaylock
@@ -29,10 +27,8 @@ pkgs: with pkgs; [
   helix
   alacritty
   ntfs3g
-  rustup
   pavucontrol
   nixfmt
-  rust-analyzer
   lld
   nil
   bun

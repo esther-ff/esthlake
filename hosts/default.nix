@@ -15,7 +15,7 @@ let
     directory:
     nixosSystem {
       modules = [
-        ./common/core
+        ./common
         ../modules
         directory
         bigeon.nixosModules.bigeon

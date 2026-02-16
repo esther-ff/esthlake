@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 # Nix, dear bastion of immutability, of functional programming
 # please `map` me over some fate, because i cannot `deepSeq` this
 # editors' configuration anymore... Purge this cursed "TOML" format
@@ -28,7 +33,9 @@ let
 
   themeSet = {
     ui = {
-      background = { bg = "bg"; };
+      background = {
+        bg = "bg";
+      };
       cursor = {
         main = {
           fg = "red";
@@ -50,13 +57,21 @@ let
       };
 
       text = {
-        main = { fg = "text"; };
-        info = { fg = "text"; };
-        focus = { fg = "text"; };
+        main = {
+          fg = "text";
+        };
+        info = {
+          fg = "text";
+        };
+        focus = {
+          fg = "text";
+        };
       };
 
       selection = {
-        main = { bg = "lightBg"; };
+        main = {
+          bg = "lightBg";
+        };
 
         primary = {
           fg = "blue";
@@ -64,9 +79,13 @@ let
         };
       };
 
-      window = { fg = "red"; };
+      window = {
+        fg = "red";
+      };
 
-      gutter = { bg = "bg"; };
+      gutter = {
+        bg = "bg";
+      };
 
       statusline = {
         main = {
@@ -96,15 +115,25 @@ let
       };
 
       linenr = {
-        main = { fg = "text"; };
-        selected = { fg = "text"; };
+        main = {
+          fg = "text";
+        };
+        selected = {
+          fg = "text";
+        };
       };
 
       virtual = {
-        ruler = { bg = "text"; };
-        whitespace = { fg = "text"; };
+        ruler = {
+          bg = "text";
+        };
+        whitespace = {
+          fg = "text";
+        };
 
-        inlay-hint = { fg = "red"; };
+        inlay-hint = {
+          fg = "red";
+        };
         jump-label = {
           fg = "red";
           modifiers = [ "bold" ];
@@ -116,7 +145,9 @@ let
         bg = "bg";
       };
 
-      highlight = { bg = "bg"; };
+      highlight = {
+        bg = "bg";
+      };
 
       menu = {
         main = {
@@ -148,43 +179,77 @@ let
       };
     };
 
-    property = { main.fg = "text"; }; # regex
-    special = { main.fg = "yellow"; };
+    property = {
+      main.fg = "text";
+    }; # regex
+    special = {
+      main.fg = "yellow";
+    };
 
-    attribute = { main.fg = "magenta"; };
+    attribute = {
+      main.fg = "magenta";
+    };
 
     type = {
       main.fg = "red";
 
-      builtin = { fg = "red"; };
-      enum.variant = { fg = "blue"; };
+      builtin = {
+        fg = "red";
+      };
+      enum.variant = {
+        fg = "blue";
+      };
     };
 
-    constructor = { main.fg = "yellow"; };
+    constructor = {
+      main.fg = "yellow";
+    };
 
     constant = {
       main.fg = "green";
-      constant = { main.fg = "green"; };
+      constant = {
+        main.fg = "green";
+      };
       builtin = {
         fg = "green";
-        boolean = { fg = "cyan"; };
+        boolean = {
+          fg = "cyan";
+        };
       };
-      character = { fg = "yellow"; };
-      character.escape = { fg = "yellow"; };
+      character = {
+        fg = "yellow";
+      };
+      character.escape = {
+        fg = "yellow";
+      };
       numeric = {
         fg = "cyan";
-        integer = { fg = "cyan"; };
-        float = { fg = "cyan"; };
+        integer = {
+          fg = "cyan";
+        };
+        float = {
+          fg = "cyan";
+        };
       };
     };
 
-    string = { main.fg = "red"; };
-    regexp = { fg = "yellow"; }; # regexp literal
+    string = {
+      main.fg = "red";
+    };
+    regexp = {
+      fg = "yellow";
+    }; # regexp literal
     special = {
       fg = "yellow";
-      path = { fg = "yellow"; };
-      url = { fg = "yellow"; };
-      symbol = { fg = "yellow"; };
+      path = {
+        fg = "yellow";
+      };
+      url = {
+        fg = "yellow";
+      };
+      symbol = {
+        fg = "yellow";
+      };
     };
 
     comment = {
@@ -200,7 +265,10 @@ let
       };
       block.documentation = {
         fg = "gray";
-        modifiers = [ "bold" "italic" ];
+        modifiers = [
+          "bold"
+          "italic"
+        ];
       };
     };
 
@@ -212,16 +280,26 @@ let
         modifier = [ "bold" ];
       };
 
-      parameter = { fg = "text"; };
-      other.member = { fg = "green"; };
+      parameter = {
+        fg = "text";
+      };
+      other.member = {
+        fg = "green";
+      };
     };
 
-    label = { fg = "cyan"; };
+    label = {
+      fg = "cyan";
+    };
 
     punctuation = {
       main.fg = "text";
-      delimiter = { fg = "blue"; };
-      bracket = { fg = "white"; };
+      delimiter = {
+        fg = "blue";
+      };
+      bracket = {
+        fg = "white";
+      };
     };
 
     keyword = {
@@ -229,14 +307,26 @@ let
       control = {
         fg = "green";
 
-        conditional = { fg = "green"; };
-        repeat = { fg = "green"; };
-        import = { fg = "green"; };
-        return = { fg = "green"; };
+        conditional = {
+          fg = "green";
+        };
+        repeat = {
+          fg = "green";
+        };
+        import = {
+          fg = "green";
+        };
+        return = {
+          fg = "green";
+        };
         exception = { };
       };
-      storage = { type.fg = "yellow"; };
-      operator = { fg = "green"; }; # `or`, `and`, `in`.
+      storage = {
+        type.fg = "yellow";
+      };
+      operator = {
+        fg = "green";
+      }; # `or`, `and`, `in`.
       directive = {
         fg = "green";
       }; # incase i forget, this is preprocessor shit
@@ -246,19 +336,31 @@ let
       };
     };
 
-    operator = { main.fg = "green"; };
+    operator = {
+      main.fg = "green";
+    };
 
     function = {
       main.fg = "cyan";
-      builtin = { fg = "cyan"; };
-      method = { fg = "cyan"; }; # Class / Struct methods.
-      macro = { fg = "red"; };
-      special = { fg = "yellow"; }; # Preprocessor in C.
+      builtin = {
+        fg = "cyan";
+      };
+      method = {
+        fg = "cyan";
+      }; # Class / Struct methods.
+      macro = {
+        fg = "red";
+      };
+      special = {
+        fg = "yellow";
+      }; # Preprocessor in C.
     };
 
     tag = {
       main.fg = "blue";
-      error = { fg = "red"; };
+      error = {
+        fg = "red";
+      };
     };
 
     diagnostic = {
@@ -297,8 +399,12 @@ let
         bg = "bg";
       };
 
-      unnecessary = { modifiers = [ "dim" ]; };
-      deprecate = { modifiers = [ "crossed_out" ]; };
+      unnecessary = {
+        modifiers = [ "dim" ];
+      };
+      deprecate = {
+        modifiers = [ "crossed_out" ];
+      };
     };
 
     info = {
@@ -321,13 +427,23 @@ let
       modifiers = [ "bold" ];
     };
 
-    namespace = { fg = "blue"; };
+    namespace = {
+      fg = "blue";
+    };
 
     diff = {
-      plus = { fg = "green"; };
-      minus = { fg = "red"; };
-      delta = { fg = "yellow"; };
-      delta.moved = { fg = "blue"; };
+      plus = {
+        fg = "green";
+      };
+      minus = {
+        fg = "red";
+      };
+      delta = {
+        fg = "yellow";
+      };
+      delta.moved = {
+        fg = "blue";
+      };
     };
   };
 
@@ -362,15 +478,21 @@ let
       light-magenta = magenta;
       light-red = red;
     };
-  } // (flattenToml themeSet);
-in {
-  options.estera.programs.helix = { enable = mkEnableOption "helix"; };
+  }
+  // (flattenToml themeSet);
+in
+{
+  options.estera.programs.helix = {
+    enable = mkEnableOption "helix";
+  };
 
   config = mkIf cfg.enable {
     home-manager.users.${user} = {
       programs.helix = {
         enable = true;
-        themes = { montrouge = theme; };
+        themes = {
+          montrouge = theme;
+        };
         settings = {
           theme = "montrouge";
           editor = {
@@ -431,11 +553,11 @@ in {
             check.command = "clippy";
             # check.allTargets = false;
 
-            # inlayHints = {
-            # closingBraceHints.minLines = 6;
-            # bindingModeHints.enable = true;
-            # parameterHints.enable = true;
-            # };
+            inlayHints = {
+              closingBraceHints.minLines = 6;
+              bindingModeHints.enable = true;
+              parameterHints.enable = true;
+            };
           };
 
           language = [

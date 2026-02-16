@@ -1,7 +1,13 @@
 { inputs, pkgs, ... }:
+let
+  overlayInput = { inherit inputs pkgs; };
+in
 {
   nixpkgs.overlays = [
     inputs.niri-nix.overlays.niri-nix
-    (import ./ironbar.nix { inherit inputs pkgs; })
+  ]
+  ++ map (path: import path overlayInput) [
+    ./ironbar.nix
+    ./helix.nix
   ];
 }

@@ -1,4 +1,9 @@
-{ config, lib, inputs, ... }:
+{
+  config,
+  lib,
+  inputs,
+  ...
+}:
 let
   inherit (lib.options) mkEnableOption;
   inherit (lib.modules) mkIf mkDefault;
@@ -6,9 +11,12 @@ let
 
   cfg = config.estera.home-manager;
   stateVersion = mkDefault "25.05";
-in {
+in
+{
 
-  options.estera.home-manager = { enable = mkEnableOption "home-manager"; };
+  options.estera.home-manager = {
+    enable = mkEnableOption "home-manager";
+  };
 
   imports = [ inputs.home-manager.nixosModules.home-manager ];
 
@@ -19,7 +27,6 @@ in {
 
       users.${user} = {
         programs = {
-
           home-manager.enable = true;
         };
 

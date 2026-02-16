@@ -1,26 +1,9 @@
 {
   config,
   pkgs,
-  inputs,
   ...
 }:
 {
-  nix = {
-    settings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-
-      substituters = [ "https://cache.nixos.org/" ];
-      trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
-
-      cores = 6;
-      max-jobs = 32;
-    };
-
-  };
-
   virtualisation.libvirtd = {
     enable = true;
     qemu = {
@@ -31,12 +14,6 @@
     onShutdown = "shutdown";
   };
 
-  documentation = {
-    enable = true;
-    dev.enable = true;
-    man.enable = true;
-  };
-
   fonts.packages = with pkgs; [
     fira-code
     fira-code-symbols
@@ -45,8 +22,6 @@
     nerd-fonts.fira-code
     nerd-fonts.monaspace
   ];
-
-  time.timeZone = "Europe/Warsaw";
 
   sops =
     let
@@ -78,11 +53,6 @@
   };
 
   security.polkit.enable = true;
-
-  nixpkgs.config = {
-    allowUnfree = true;
-    pulseaudio = true;
-  };
 
   programs = {
     gnupg.agent = {
@@ -126,14 +96,6 @@
     };
   };
 
-  i18n = {
-    defaultLocale = "en_US.UTF-8";
-  };
-
-  console = {
-    keyMap = "pl";
-  };
-
   services = {
     xserver = {
       videoDrivers = [ "nvidia" ];
@@ -154,13 +116,6 @@
     };
 
     openssh.enable = true;
-
-    vsftpd = {
-      enable = true;
-      localUsers = true;
-      localRoot = "/home/esther/ftp";
-      writeEnable = true;
-    };
   };
 
   users.users.esther = {
