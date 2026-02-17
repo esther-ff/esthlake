@@ -1,6 +1,11 @@
-{ inputs, pkgs, ... }:
+{
+  inputs,
+  pkgs,
+  lib,
+  ...
+}:
 let
-  overlayInput = { inherit inputs pkgs; };
+  overlayInput = { inherit inputs pkgs lib; };
 in
 {
   nixpkgs.overlays = [
