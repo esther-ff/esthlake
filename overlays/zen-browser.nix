@@ -10,10 +10,11 @@
     inherit (lib)
       concatLines
       mapAttrsToList
-      mkMerge
+      mergeAttrsList
       ;
-    inherit (lib.strings) toJSON;
 
+    inherit (lib.strings) toJSON;
+    downloadDir = "/data/Pobrane";
   in
   {
     zen-browser =
@@ -38,8 +39,6 @@
               "privacy.clearSiteData.cookiesAndStorage" = false;
               "privacy.fingerprintingProtection" = true;
               "privacy.history.custom" = true;
-              "privacy.purge_trackers.date_in_cookie_database" = 0;
-              "privacy.purge_trackers.last_purge" = 1771281400663;
               "privacy.query_stripping.enabled" = true;
               "privacy.query_stripping.enabled.pbmode" = true;
               "privacy.resistFingerprinting" = true;
@@ -57,20 +56,35 @@
               "privacy.trackingprotection.emailtracking.enabled" = true;
               "privacy.trackingprotection.enabled" = true;
               "privacy.trackingprotection.socialtracking.enabled" = true;
+              "security.block_fileuri_script_with_wrong_mime" = true;
+              "browser.translations.automaticallyPopup" = true;
             };
 
           extraPolicies = {
             OfferToSaveLogins = true;
             DisableTelemetry = true;
+
+            # Get the FUCK OUT!!!
+            GenerativeAI = {
+              Enabled = false;
+              Chatbot = false;
+              LinkPreviews = false;
+              TabGroups = false;
+              Locked = true;
+            };
+
+            HardwareAcceleration = true;
+            DefaultDownloadDirectory = downloadDir;
+
             ExtensionSettings =
               let
-                mkUrl = shortId: "https://addons.mozilla.org/en-US/firefox/downloads/latest/${shortId}/latest.xpi";
+                mkUrl = shortId: "https://addons.mozilla.org/firefox/downloads/latest/${shortId}/latest.xpi";
                 mkExtension =
                   { shortId, guid }:
                   {
                     ${guid} = {
-                      install_url = mkUrl shortId;
-                      installation_mode = "normal_installed";
+                      install_url = mkUrl guid;
+                      installation_mode = "force_installed";
                     };
                   };
                 exts = [
@@ -82,9 +96,27 @@
                     shortId = "darkreader";
                     guid = "addon@darkreader.org";
                   }
+                  {
+                    shortId = "everforest_theme";
+                    guid = "{39ec6c53-67ca-42cc-9f23-339cca400ef2}";
+                  }
                 ];
               in
-              mkMerge (map mkExtension exts);
+              mergeAttrsList (map mkExtension exts);
+
+            ManagedBookmarks =
+              let
+                bookmark = name: url: {
+                  inherit name url;
+                };
+              in
+              [
+                (bookmark "RISC-V spec (Privileged)" "https://five-embeddev.com/riscv-priv-isa-manual/Priv-v1.12/supervisor.html")
+                (bookmark "RISC-V assembly" "https://projectf.io/posts/riscv-cheat-sheet/")
+                (bookmark "Proton mail" "https://mail.proton.me")
+                (bookmark "Github" "https://github.com/esther-ff")
+                (bookmark "Codeberg" "https://codeberg.com/esther-ff")
+              ];
 
             SearchEngines = {
               Default = "ddg";
@@ -103,7 +135,7 @@
                 }
                 {
                   Name = "archwiki";
-                  URLTemplate = "https://wiki.archlinux.org/w/index.php?search={searchTerms}";
+                  URLTemplate = "https://wiki.archlinux.org/index.php?search={searchTerms}";
                   IconURL = "https://wiki.archlinux.org/favicon.ico";
                   Alias = "@aw";
                 }
@@ -113,12 +145,21 @@
                   IconURL = "https://noogle.dev/favicon.ico";
                   Alias = "@ng";
                 }
+                {
+                  Name = "docs.rs";
+                  URLTemplate = "https://docs.rs/releases/search?query={searchTerms}";
+                  IconURL = "https://docs.rs/favicon.ico";
+                  Alias = "@rd";
+                }
+                {
+                  Name = "ruststd";
+                  URLTemplate = "https://doc.rust-lang.org/std/?search={searchTerms}";
+                  IconURL = "https://rust-lang.org/favicon.ico";
+                  Alias = "@rs";
+                }
               ];
             };
           };
-
         };
-
-    # zen-browser = inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default;
   }
 )
