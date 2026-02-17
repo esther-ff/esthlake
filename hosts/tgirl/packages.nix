@@ -9,7 +9,6 @@ pkgs: with pkgs; [
   thunderbird
   signal-desktop
   grc
-  gcc
   libreoffice
   openjdk
   prismlauncher
@@ -27,11 +26,10 @@ pkgs: with pkgs; [
   ntfs3g
   pavucontrol
   nixfmt
-  lld
   nil
-  bun
   firefox
   kdePackages.okular
   krita
   ironbar
+  zen-browser
 ]

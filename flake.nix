@@ -12,6 +12,7 @@
     bigeon.url = "github:esther-ff/uuhbot";
     niri-nix.url = "git+https://codeberg.org/BANanaD3V/niri-nix";
     helix.url = "github:helix-editor/helix";
+    zen-browser.url = "github:youwen5/zen-browser-flake";
   };
 
   outputs =

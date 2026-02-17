@@ -9,5 +9,6 @@ in
   ++ map (path: import path overlayInput) [
     ./ironbar.nix
     ./helix.nix
+    ./zen-browser.nix
   ];
 }
