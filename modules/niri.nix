@@ -96,7 +96,7 @@ let
           "-show"
           "drun"
         ];
-        "Alt+F" = spawn "firefox";
+        "Alt+F" = spawn "zen";
         "Alt+C" = close-window;
         "Alt+S" = {
           screenshot = [ ];
@@ -146,8 +146,6 @@ in
     };
   };
 
-  # imports = [ inputs.niri.nixosModules.niri ];
-
   config = lib.modules.mkIf cfg.enable (
     let
       builtNiriConfig = pkgs.writeText "niri-config.kdl" (
@@ -155,7 +153,6 @@ in
       );
     in
     {
-      nixpkgs.overlays = [ inputs.niri-nix.overlays.niri-nix ];
       programs.niri = {
         enable = true;
         package = pkgs.niri-unstable;

@@ -154,9 +154,11 @@
         '';
 
         loginStart = ''
-          if [ "$XDG_VTNR" -eq 1 ] && [ -z "$WAYLAND_DISPLAY" ]; then
-              systemctl --user import-environment DISPLAY
-              niri --session
+          if [ "$XDG_VTNR" -eq 1 ] && [ -z "$WAYLAND_DISPLAY" ] && [[ $(tty) = "/dev/tty1" ]]; then
+              exec niri-session
+              # systemctl --user import-environment DISPLAY
+              # makes this shit WORK!!
+              # dbus-run-session niri-session
           fi
         '';
       };
