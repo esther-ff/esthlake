@@ -1,5 +1,6 @@
 _: {
   imports = [
+    ./foot.nix
     ./alacritty.nix
     ./steam.nix
     ./bash.nix

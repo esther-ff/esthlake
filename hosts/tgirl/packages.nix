@@ -1,35 +1,40 @@
-pkgs: with pkgs; [
-  dunst
-  bottles
-  swaylock
-  just
-  python3
-  virt-manager
-  man-pages
-  thunderbird
-  signal-desktop
-  grc
-  libreoffice
-  openjdk
-  prismlauncher
-  xwayland-satellite
-  xdg-desktop-portal
-  xdg-desktop-portal-gtk
-  wireshark
-  cargo-mommy
-  swaybg
-  obsidian
-  git
-  pipewire
-  helix
-  alacritty
-  ntfs3g
-  pavucontrol
-  nixfmt
-  nil
-  firefox
-  kdePackages.okular
-  krita
-  ironbar
-  zen-browser
-]
+{ pkgs, ... }:
+with pkgs;
+{
+  environment.systemPackages = [
+    dunst
+    bottles
+    swaylock
+    just
+    python3
+    virt-manager
+    man-pages
+    thunderbird
+    signal-desktop
+    grc
+    libreoffice
+    openjdk
+    prismlauncher
+    xwayland-satellite
+    xdg-desktop-portal
+    xdg-desktop-portal-gtk
+    wireshark
+    cargo-mommy
+    swaybg
+    obsidian
+    git
+    pipewire
+    helix
+    alacritty
+    ntfs3g
+    pavucontrol
+    nixfmt
+    nil
+    firefox
+    kdePackages.okular
+    ironbar
+    zen-browser
+    sxiv
+    yazi
+  ];
+}

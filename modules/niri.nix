@@ -8,6 +8,7 @@
 let
   cfg = config.estera.programs.niri;
   cfgXwayland = config.estera.programs.xwayland.useSatellite;
+  cfgFoot = config.estera.programs.foot.enable;
 
   inherit (lib.options) mkEnableOption mkOption;
   inherit (lib) types attrNames;
@@ -42,7 +43,11 @@ let
       ]
       [ "ironbar" ]
     ]
-    ++ lib.optional cfgXwayland [ "xwayland-satellite" ];
+    ++ lib.optional cfgXwayland [ "xwayland-satellite" ]
+    ++ lib.optional cfgFoot [
+      "foot"
+      "--server"
+    ];
 
     layout = {
       focus-ring = {
@@ -90,7 +95,7 @@ let
         focus-workspace = val: { focus-workspace = val; };
       in
       {
-        "Alt+Q" = spawn "alacritty";
+        "Alt+Q" = spawn "footclient";
         "Alt+D" = spawn [
           "rofi"
           "-show"

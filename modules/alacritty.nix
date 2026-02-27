@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib.estera) colorScheme;
   inherit (lib.options) mkEnableOption;
@@ -18,6 +23,7 @@ in
       programs.alacritty = {
         enable = true;
         settings = {
+          terminal.shell = "${pkgs.fish}/bin/fish";
 
           window = {
             padding = rec {

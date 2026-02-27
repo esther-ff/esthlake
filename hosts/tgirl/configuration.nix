@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   ...
 }:
@@ -13,15 +12,6 @@
     onBoot = "ignore";
     onShutdown = "shutdown";
   };
-
-  fonts.packages = with pkgs; [
-    fira-code
-    fira-code-symbols
-    noto-fonts
-    noto-fonts-color-emoji
-    nerd-fonts.fira-code
-    nerd-fonts.monaspace
-  ];
 
   sops =
     let
@@ -37,22 +27,10 @@
       };
     };
 
-  environment = {
-    variables = {
-      DISPLAY = ":0.0";
-      __GL_THREADED_OPTIMIZATIONS = "0";
-      EDITOR = "hx";
-      VISUAL = "hx";
-      NIXOS_OZONE_WL = "1";
-      ELECTRON_OZONE_PLATFORM_HINT = "wayland";
-      XDG_SESSION_DESKTOP = "niri";
-      MOZ_ENABLE_WAYLAND = "1";
-    };
-
-    systemPackages = (import ./packages.nix pkgs);
+  security = {
+    polkit.enable = true;
+    pam.services.swaylock.enable = true;
   };
-
-  security.polkit.enable = true;
 
   programs = {
     gnupg.agent = {
@@ -85,14 +63,6 @@
         matchConfig.Name = "eno1";
         networkConfig.DHCP = "ipv4";
       };
-    };
-
-    services."getty@tty1" = {
-      overrideStrategy = "asDropin";
-      serviceConfig.ExecStart = [
-        ""
-        "@${pkgs.util-linux}/sbin/agetty agetty -o '-p -- esther' --login-program ${config.services.getty.loginProgram}  --noclear --keep-baud %I 115200,38400,9600 $TERM"
-      ];
     };
   };
 
@@ -132,40 +102,34 @@
     home-manager.enable = true;
 
     programs = {
-      alacritty.enable = true;
+      foot.enable = true;
       fish.enable = true;
       rofi.enable = true;
       steam.enable = true;
       xdg-portal.enable = true;
+      helix.enable = true;
+      wireshark.enable = true;
+      xwayland = {
+        enable = true;
+        useSatellite = true;
+      };
+
       niri = {
         enable = true;
         wallpaper = "windows11.jpg";
         wallpaperSource = ../../assets/wallpapers;
       };
-      helix.enable = true;
+
       bash = {
         enable = true;
-        interactiveStart = ''
-          if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
-          then
-            shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
-            exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
-          fi
-        '';
-
         loginStart = ''
-          if [ "$XDG_VTNR" -eq 1 ] && [ -z "$WAYLAND_DISPLAY" ] && [[ $(tty) = "/dev/tty1" ]]; then
-              exec niri-session
+          # if [ "$XDG_VTNR" -eq 1 ] && [ -z "$WAYLAND_DISPLAY" ] && [[ $(tty) = "/dev/tty1" ]]; then
+          #     exec niri-session
               # systemctl --user import-environment DISPLAY
               # makes this shit WORK!!
               # dbus-run-session niri-session
-          fi
+          # fi
         '';
-      };
-      wireshark.enable = true;
-      xwayland = {
-        enable = true;
-        useSatellite = true;
       };
     };
   };

@@ -1,8 +1,14 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.estera.programs.xdg-portal;
   inherit (lib.options) mkEnableOption;
-in {
+in
+{
   options.estera.programs.xdg-portal = {
     enable = mkEnableOption "xdg-portal";
   };
@@ -18,7 +24,10 @@ in {
         config = {
           common.default = [ "gtk" ];
           niri = {
-            default = [ "gtk" "gnome" ];
+            default = [
+              "gtk"
+              "gnome"
+            ];
             "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
           };
         };
