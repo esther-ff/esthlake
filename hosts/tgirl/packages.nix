@@ -2,6 +2,8 @@
 with pkgs;
 {
   environment.systemPackages = [
+    element-desktop
+    file
     dunst
     bottles
     swaylock

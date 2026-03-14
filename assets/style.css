@@ -1,24 +1,44 @@
 :root {
     --color-dark-primary: #1e2326;
+    --color-dark-primary-tr: #1e232600;
     --color-dark-secondary: #1e2326;
+    --color-green: #a7c080;
     --color-white: #d3c6aa;
     --color-active: #dbbc7f;
     --color-urgent: #e67e80;
 
     --margin-lg: 1em;
     --margin-sm: 0.5em;
+    --margin-very-sm: 0.5px;
+    --padding-lg: 4px;
+    --padding-sm: 4px;
+
+    --font-size: 13px;
+    --border-size: 2px;
+}
+
+
+window {
+    background-color: #ffffff00;
 }
 
 * {
     box-shadow: none;
     background-image: none;
-    font-size: 15px;
-    font-family: MonaspiceAr NF;
-    font-weight: bold;
+    font-size: var(--font-size);
+    font-family: MonaspiceNe NF;
+    outline: none;
+    min-height: 0;
+    min-width: 0;
 }
 
-.workspaces * {    
+/* workspaces */
+.workspaces * {
     color: var(--color-white);
+    padding-right: var(--padding-lg);
+    padding-left: var(--padding-lg);
+    padding-bottom: 0;
+    padding-top: 0;
 }
 
 .workspaces .item.visible *, .workspaces .item.visible  {
@@ -27,62 +47,71 @@
     /* box-shadow: inset 0 -1px var(--color-white); */
 }
 
-.workspaces .item.focused {
-    /* box-shadow: inset 0 -1px var(--color-active); */
-    /* background-color: var(--color-active); */
-}
-
 .workspaces .item.urgent {
     background-color: var(--color-urgent);
 }
 
+.workspaces .item {    
+    border: var(--border-size) solid var(--color-green);
+    margin-right: var(--margin-sm);
+}
+
+/* idk */
 .focused .label {
     font-weight: bold;
 }
 
-#bar, popover, popover contents, calendar {
+#end * {
+    margin-left: 4px;
+}
+
+/* calendar */
+popover, popover contents, calendar {
     background-color: var(--color-dark-primary);
     color: var(--color-white);
 }
 
-box, button, label {
+/* buttons */
+button {
     background-color: var(--color-dark-primary);
     border: none;
     border-radius: 0;
-}
-
-button {
-    padding-left: var(--margin-sm);
-    padding-right: var(--margin-sm);
 }
 
 button:hover, button:active {
     background-color: var(--color-dark-secondary);
 }
 
-#end > * + * {
-    margin-left: var(--margin-lg);
-}
-
 .sysinfo > * + * {
-    margin-left: var(--margin-sm);
+    background-color: var(--color-dark-primary);
 }
 
-.clock {
-    font-weight: bold;
+.sysinfo label {
+    border: var(--border-size) solid var(--color-green);
+    padding: var(--padding-lg);
+    background: var(--color-dark-primary);
     color: var(--color-white);
 }
 
+/* clock */
+.clock {
+    border: var(--border-size) solid var(--color-green);
+    color: var(--color-white);
+    padding: var(--padding-sm);
+}
 
 .popup-clock .calendar-clock {
-    font-size: 2.0em;
+    font-size: var(--font-size);
 }
 
 .popup-clock .calendar .today {
     background-color: var(--color-active);
 }
 
+/* volume */
 .volume {
+    padding: var(--padding-sm);
+    border: var(--border-size) solid var(--color-green);
     color: var(--color-white);
 }
 
@@ -91,16 +120,14 @@ button:hover, button:active {
 }
 
 .popup-volume .apps-box .app-box .btn-mute {
-    border-radius: 0;
     border: none;
-    font-size: 20px;
+    font-size: var(--font-size);
 }
 
 .popup-volume .device-box .device-selector *, .popup-volume .device-box .btn-mute {
-    border-radius: 0;
     border: none;
 }
 
 .popup-volume .device-box .btn-mute *, .popup-volume .apps-box .app-box .btn-mute * {
-    font-size: 20px;
+    font-size: var(--font-size);
 }

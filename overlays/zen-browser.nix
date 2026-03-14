@@ -75,6 +75,7 @@
 
             HardwareAcceleration = true;
             DefaultDownloadDirectory = downloadDir;
+            DownloadDirectory = "\${home}/downloads";
 
             ExtensionSettings =
               let

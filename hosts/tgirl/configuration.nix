@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   ...
 }:
@@ -22,8 +23,8 @@
       defaultSopsFile = ../../secrets.yaml;
       secrets = {
         mullvad_private_key = { };
-
         bigeon_discord_token = { };
+        admin_token_env = { };
       };
     };
 
@@ -77,6 +78,34 @@
         lightdm.enable = false;
         startx.enable = false;
       };
+
+    };
+
+    vaultwarden = {
+      enable = true;
+      backupDir = "/var/backup/vw";
+      environmentFile = "/run/secrets/admin_token_env";
+      config = {
+        ROCKET_PORT = 8768;
+        ROCKET_ADDRESS = "127.0.0.1";
+        ROCKET_LOG = "warn";
+        SIGNUPS_ALLOWED = false;
+      };
+    };
+
+    caddy = {
+      enable = true;
+      globalConfig = ''
+        skip_install_trust
+        auto_https disable_redirects
+      '';
+      virtualHosts."https://localhost:8000, https://192.168.0.2:8000".extraConfig = ''
+        reverse_proxy localhost:${toString config.services.vaultwarden.config.ROCKET_PORT} {
+          header_up X-Real-IP {remote_host}
+        }
+
+        tls internal
+      '';
     };
 
     pipewire = {
@@ -116,7 +145,7 @@
 
       niri = {
         enable = true;
-        wallpaper = "windows11.jpg";
+        wallpaper = "kibty0.png";
         wallpaperSource = ../../assets/wallpapers;
       };
 
