@@ -61,7 +61,7 @@
             };
 
           extraPolicies = {
-            OfferToSaveLogins = true;
+            OfferToSaveLogins = false;
             DisableTelemetry = true;
 
             # Get the FUCK OUT!!!
