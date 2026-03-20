@@ -2,14 +2,12 @@ _: {
   imports = [
     ./zoxide.nix
     ./foot.nix
-    ./alacritty.nix
     ./steam.nix
     ./bash.nix
     ./fish.nix
     ./helix.nix
     ./niri.nix
     ./rofi.nix
-    ./waybar.nix
     ./wireguard.nix
     ./xdg-portal.nix
     ./home-manager.nix

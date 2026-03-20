@@ -28,12 +28,8 @@ with pkgs;
     git
     pipewire
     helix
-    alacritty
     ntfs3g
     pavucontrol
-    nixfmt
-    nil
-    firefox
     kdePackages.okular
     ironbar
     zen-browser
