@@ -1,5 +1,6 @@
 _: {
   imports = [
+    ./zoxide.nix
     ./foot.nix
     ./alacritty.nix
     ./steam.nix

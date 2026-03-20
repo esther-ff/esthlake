@@ -2,6 +2,8 @@
 with pkgs;
 {
   environment.systemPackages = [
+    fzf
+    htop
     element-desktop
     file
     dunst
@@ -13,7 +15,6 @@ with pkgs;
     man-pages
     thunderbird
     signal-desktop
-    grc
     libreoffice
     openjdk
     prismlauncher

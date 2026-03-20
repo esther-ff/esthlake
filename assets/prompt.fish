@@ -86,5 +86,10 @@ function fish_prompt
         end
     end
 
-    echo -n -s λ ' '$cwd $repo_info $normal $arrow
+    set -l nix_prefix ""
+    if test $IN_NIX_SHELL
+        set nix_prefix "$blue(nix) "
+    end
+
+    echo -n -s λ ' '$nix_prefix $cwd $repo_info $normal $arrow
 end

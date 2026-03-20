@@ -54,9 +54,14 @@ let
         active-color = "rgb(219, 188, 127)";
         width = 2;
       };
+      gaps = 12;
     };
 
     animations = {
+      off = [ ];
+    };
+
+    gestures.hot-corners = {
       off = [ ];
     };
 
@@ -101,6 +106,7 @@ let
           "-show"
           "drun"
         ];
+        "Alt+L" = spawn "swaylock";
         "Alt+F" = spawn "zen";
         "Alt+C" = close-window;
         "Alt+S" = {
@@ -148,6 +154,11 @@ in
       description = "file name of the wallpaper image located in assets/wallpapers/";
       type = types.enum (attrNames (builtins.readDir cfg.wallpaperSource));
       default = null;
+    };
+
+    screenshotPath = mkOption {
+      description = "path where niri should save screenshots";
+      type = types.str;
     };
   };
 

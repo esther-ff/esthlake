@@ -25,6 +25,7 @@
         mullvad_private_key = { };
         bigeon_discord_token = { };
         admin_token_env = { };
+        user_password = { };
       };
     };
 
@@ -118,6 +119,7 @@
   };
 
   users.users.esther = {
+    hashedPasswordFile = "/run/secrets/user_password";
     isNormalUser = true;
     extraGroups = [
       "wheel"
@@ -138,6 +140,8 @@
       xdg-portal.enable = true;
       helix.enable = true;
       wireshark.enable = true;
+      zoxide.enable = true;
+
       xwayland = {
         enable = true;
         useSatellite = true;
@@ -147,17 +151,16 @@
         enable = true;
         wallpaper = "kibty0.png";
         wallpaperSource = ../../assets/wallpapers;
+        screenshotPath = "/data/screenshoty";
       };
 
       bash = {
         enable = true;
         loginStart = ''
-          # if [ "$XDG_VTNR" -eq 1 ] && [ -z "$WAYLAND_DISPLAY" ] && [[ $(tty) = "/dev/tty1" ]]; then
-          #     exec niri-session
-              # systemctl --user import-environment DISPLAY
-              # makes this shit WORK!!
-              # dbus-run-session niri-session
-          # fi
+          if [ "$XDG_VTNR" -eq 1 ] && [ -z "$WAYLAND_DISPLAY" ] && [[ $(tty) = "/dev/tty1" ]]; then
+              echo "launching niri"
+              niri-session &
+          fi
         '';
       };
     };
