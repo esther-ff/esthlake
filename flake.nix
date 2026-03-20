@@ -27,6 +27,9 @@
       helix,
       ...
     }:
+    let
+      forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
+    in
     {
       nixosConfigurations = import ./hosts {
         lib = import ./lib/default.nix nixpkgs.lib;
@@ -38,6 +41,21 @@
           helix
           ;
       };
+
+      devShells = forAllSystems (
+        system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        {
+          default = pkgs.mkShell {
+            buildInputs = with pkgs; [
+              nixfmt
+              nil
+            ];
+          };
+        }
+      );
     };
 
 }
