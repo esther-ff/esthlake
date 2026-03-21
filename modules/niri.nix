@@ -101,11 +101,7 @@ let
       in
       {
         "Alt+Q" = spawn "footclient";
-        "Alt+D" = spawn [
-          "rofi"
-          "-show"
-          "drun"
-        ];
+        "Alt+D" = spawn "fuzzel";
         "Alt+L" = spawn "swaylock";
         "Alt+F" = spawn "zen";
         "Alt+C" = close-window;
@@ -169,6 +165,16 @@ in
       );
     in
     {
+      assertions = [
+        {
+          assertion = config.estera.programs.foot.enable;
+          message = "the niri configuration requires foot!";
+        }
+        {
+          assertion = config.estera.programs.fuzzel.enable;
+          message = "the niri configuration requires fuzzel!";
+        }
+      ];
       programs.niri = {
         enable = true;
         package = pkgs.niri-unstable;

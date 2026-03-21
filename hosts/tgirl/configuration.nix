@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }:
 {
@@ -79,7 +80,6 @@
         lightdm.enable = false;
         startx.enable = false;
       };
-
     };
 
     vaultwarden = {
@@ -141,6 +141,7 @@
       helix.enable = true;
       wireshark.enable = true;
       zoxide.enable = true;
+      fuzzel.enable = true;
 
       xwayland = {
         enable = true;

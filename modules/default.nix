@@ -1,6 +1,7 @@
 _: {
   imports = [
     ./zoxide.nix
+    ./fuzzel.nix
     ./foot.nix
     ./steam.nix
     ./bash.nix
