@@ -1,5 +1,6 @@
 _: {
   imports = [
+    ./espanso.nix
     ./zoxide.nix
     ./fuzzel.nix
     ./foot.nix

@@ -3,22 +3,11 @@
 {
   networking.wg-quick.interfaces =
     let
-      # determineWhichKeys = a:
-      #   if a == 1 then {
-      #     priv = "/etc/vpn_key.key";
-      #     pub = "y+psGTv+CANlwica4M3gVUQs7riXLTvFX3JWy14Tuks=";
-      #   } else if a == 2 then {
-      #     priv = "IVHJWvZM75yochmMV527KbCxrvyQsNSkWatxvhiE+jQ=";
-      #     pub = "/etc/vpn_key2.key";
-      #   } else
-      #     throw "invalid number to choose public/private key pair";
-      # keys = determineWhichKeys 1;
-
       keys = {
         priv = "/run/secrets/mullvad_private_key";
-        pub = "DVui+5aifNFRIVDjH3v2y+dQ+uwI+HFZOd21ajbEpBo=";
+        pub = "uUYbYGKoA6UBh1hfkAz5tAWFv4SmteYC9kWh7/K6Ah0=";
       };
-      serverIp = "185.65.134.82";
+      serverIp = "92.60.40.209";
       listenPort = 51820;
       networkToBlock = "192.168.0.0/24";
 
@@ -28,11 +17,11 @@
     {
       wg0 = {
         address = [
-          "10.65.225.175/32"
-          "fc00:bbbb:bbbb:bb01::2:e1ae/128"
+          "10.72.48.149/32"
+          "fc00:bbbb:bbbb:bb01::9:3094/128"
         ];
 
-        dns = [ "100.64.0.17" ];
+        dns = [ "10.64.0.1" ];
         inherit listenPort;
         inherit privateKeyFile;
 
@@ -73,7 +62,6 @@
         #     -m addrtype ! --dst-type LOCAL \
         #     -j REJECT
         # '';
-
         peers = [
           {
             inherit publicKey;

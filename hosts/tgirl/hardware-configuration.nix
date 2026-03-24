@@ -67,7 +67,7 @@
     # blacklistedKernelModules = [ "r8169" ];
 
     loader = {
-      systemd-boot.enable = true;
+      limine.enable = true;
       efi.canTouchEfiVariables = true;
     };
 
@@ -113,15 +113,10 @@
       80
       443
       21
+      53
       20
       8000
     ];
-
-    nat = {
-      enable = true;
-      internalInterfaces = [ "ve-*" ];
-      externalInterface = "eno1";
-    };
   };
 
 }
