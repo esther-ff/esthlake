@@ -1,19 +1,34 @@
 {
-  description = "Acero";
+  description = "Aaaaaa...";
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
-    sops-nix.url = "github:Mic92/sops-nix";
-    # home-manager = {
-    #   url = "github:nix-community/home-manager";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-    ironbar.url = "path:./pkgs/ironbar";
-    bigeon.url = "github:esther-ff/uuhbot";
-    niri-nix.url = "git+https://codeberg.org/BANanaD3V/niri-nix";
-    helix.url = "github:helix-editor/helix";
-    zen-browser.url = "github:youwen5/zen-browser-flake";
     nix-cachyos.url = "github:xddxdd/nix-cachyos-kernel/release";
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ironbar = {
+      url = "path:./pkgs/ironbar";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    bigeon = {
+      url = "github:esther-ff/uuhbot";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    niri-nix = {
+      url = "git+https://codeberg.org/BANanaD3V/niri-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    helix = {
+      url = "github:helix-editor/helix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

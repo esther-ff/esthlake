@@ -25,11 +25,16 @@
   };
 
   boot = {
+    kernelParams = [
+      "quiet"
+      "loglevel=3"
+      "libahci.ignore_sss=1"
+    ];
     supportedFilesystems = lib.mkForce [
       "btrfs"
       "vfat"
     ];
-    kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto;
+    kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
     kernelModules = lib.mkForce [
       "kvm-amd"
       "nvidia"
@@ -40,13 +45,12 @@
     ];
 
     initrd = {
-      preDeviceCommands = "";
       kernelModules = lib.mkForce [ "btrfs" ];
       availableKernelModules = [
-        "nvidia"
-        "nvidia_modeset"
-        "nvidia_drm"
-        "nvidia_uvm"
+        # "nvidia"
+        # "nvidia_modeset"
+        # "nvidia_drm"
+        # "nvidia_uvm"
         "xhci_pci"
         "ahci"
         "nvme"

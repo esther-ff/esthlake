@@ -572,6 +572,7 @@ in
   };
 
   config = mkIf cfg.enable {
+    # TERRIBLE!
     systemd.tmpfiles.rules = map ({ name, value }: "L+ /home/${user}/${name} - - - - ${value}") [
       {
         name = ".config/helix/themes/montrouge.toml";

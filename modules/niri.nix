@@ -189,16 +189,15 @@ in
         package = pkgs.niri-unstable;
       };
 
-      programs.bash.loginShellInit =
-        if cfg.autostart then
-          ''
-            if [ "$XDG_VTNR" -eq 1 ] && [ -z "$WAYLAND_DISPLAY" ] && [[ $(tty) = "/dev/tty1" ]]; then
-                echo "launching niri"
-                niri-session &
-            fi
-          ''
-        else
-          "";
+      programs.bash = lib.modules.mkIf cfg.autostart {
+        enable = true;
+        loginShellInit = ''
+          if [ "$XDG_VTNR" -eq 1 ] && [ -z "$WAYLAND_DISPLAY" ] && [[ $(tty) = "/dev/tty1" ]]; then
+              echo "launching niri"
+              niri-session &
+          fi
+        '';
+      };
 
       environment.variables = {
         NIRI_CONFIG = "${builtNiriConfig}";
