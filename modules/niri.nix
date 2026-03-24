@@ -156,6 +156,12 @@ in
       description = "path where niri should save screenshots";
       type = types.str;
     };
+
+    autostart = mkOption {
+      description = "if niri should set up an autostart rule with bash";
+      default = false;
+      type = types.bool;
+    };
   };
 
   config = lib.modules.mkIf cfg.enable (
@@ -175,10 +181,24 @@ in
           message = "the niri configuration requires fuzzel!";
         }
       ];
+
+      nixpkgs.overlays = [ inputs.niri-nix.overlays.niri-nix ];
+
       programs.niri = {
         enable = true;
         package = pkgs.niri-unstable;
       };
+
+      programs.bash.loginShellInit =
+        if cfg.autostart then
+          ''
+            if [ "$XDG_VTNR" -eq 1 ] && [ -z "$WAYLAND_DISPLAY" ] && [[ $(tty) = "/dev/tty1" ]]; then
+                echo "launching niri"
+                niri-session &
+            fi
+          ''
+        else
+          "";
 
       environment.variables = {
         NIRI_CONFIG = "${builtNiriConfig}";

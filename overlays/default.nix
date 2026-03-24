@@ -9,7 +9,6 @@ let
 in
 {
   nixpkgs.overlays = [
-    inputs.niri-nix.overlays.niri-nix
     inputs.nix-cachyos.overlays.pinned
   ]
   ++ map (path: import path overlayInput) [

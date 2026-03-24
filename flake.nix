@@ -4,10 +4,10 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # home-manager = {
+    #   url = "github:nix-community/home-manager";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     ironbar.url = "path:./pkgs/ironbar";
     bigeon.url = "github:esther-ff/uuhbot";
     niri-nix.url = "git+https://codeberg.org/BANanaD3V/niri-nix";
@@ -19,7 +19,6 @@
   outputs =
     inputs@{
       nixpkgs,
-      home-manager,
       ironbar,
       bigeon,
       sops-nix,

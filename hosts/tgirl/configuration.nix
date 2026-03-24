@@ -81,33 +81,6 @@
       };
     };
 
-    vaultwarden = {
-      enable = true;
-      backupDir = "/var/backup/vw";
-      environmentFile = "/run/secrets/admin_token_env";
-      config = {
-        ROCKET_PORT = 8768;
-        ROCKET_ADDRESS = "127.0.0.1";
-        ROCKET_LOG = "warn";
-        SIGNUPS_ALLOWED = false;
-      };
-    };
-
-    caddy = {
-      enable = true;
-      globalConfig = ''
-        skip_install_trust
-        auto_https disable_redirects
-      '';
-      virtualHosts."https://localhost:8000, https://192.168.0.2:8000".extraConfig = ''
-        reverse_proxy localhost:${toString config.services.vaultwarden.config.ROCKET_PORT} {
-          header_up X-Real-IP {remote_host}
-        }
-
-        tls internal
-      '';
-    };
-
     pipewire = {
       enable = true;
       pulse.enable = true;
@@ -129,12 +102,9 @@
   };
 
   estera = {
-    home-manager.enable = true;
-
     programs = {
       foot.enable = true;
       fish.enable = true;
-      rofi.enable = true;
       steam.enable = true;
       xdg-portal.enable = true;
       helix.enable = true;
@@ -147,21 +117,17 @@
         useSatellite = true;
       };
 
+      vaultwarden = {
+        enable = true;
+        environmentFile = "/run/secrets/admin_token_env";
+      };
+
       niri = {
         enable = true;
+        autostart = true;
         wallpaper = "kibty0.png";
         wallpaperSource = ../../assets/wallpapers;
         screenshotPath = "/data/screenshoty";
-      };
-
-      bash = {
-        enable = true;
-        loginStart = ''
-          if [ "$XDG_VTNR" -eq 1 ] && [ -z "$WAYLAND_DISPLAY" ] && [[ $(tty) = "/dev/tty1" ]]; then
-              echo "launching niri"
-              niri-session &
-          fi
-        '';
       };
     };
   };

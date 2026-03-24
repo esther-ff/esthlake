@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 # Nix, dear bastion of immutability, of functional programming
@@ -480,6 +481,90 @@ let
     };
   }
   // (flattenToml themeSet);
+
+  editorConfig = {
+    theme = "montrouge";
+    editor = {
+      completion-timeout = 5;
+      line-number = "relative";
+      file-picker.hidden = false;
+      end-of-line-diagnostics = "hint";
+
+      # lsp = { display-inlay-hints = true; };
+
+      inline-diagnostics = {
+        cursor-line = "warning";
+        other-lines = "info";
+      };
+
+      soft-wrap = {
+        enable = true;
+        max-wrap = 30;
+      };
+
+      statusline = {
+        right = [
+          "diagnostics"
+          "selections"
+          "register"
+          "position"
+          "file-encoding"
+          "file-type"
+        ];
+        mode = {
+          normal = "normal";
+          insert = "insert";
+          select = "select";
+        };
+      };
+    };
+
+    keys = {
+      insert = {
+        up = "no_op";
+        down = "no_op";
+        left = "no_op";
+        right = "no_op";
+        pageup = "no_op";
+        pagedown = "no_op";
+        home = "no_op";
+        end = "no_op";
+      };
+    };
+
+  };
+
+  languages = {
+    language-server.clangd = {
+      command = "${pkgs.clang-tools}/bin/clangd";
+    };
+
+    language-server.rust-analyzer.config = {
+      check.command = "clippy";
+      # check.allTargets = false;
+
+      inlayHints = {
+        closingBraceHints.minLines = 6;
+        bindingModeHints.enable = true;
+        parameterHints.enable = true;
+      };
+    };
+
+    language = [
+      {
+        name = "nix";
+        auto-format = true;
+        formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
+      }
+      {
+        name = "cpp";
+        auto-format = true;
+        formatter.command = "${pkgs.clang-tools}/bin/clang-format";
+      }
+    ];
+  };
+
+  toml = (pkgs.formats.toml { }).generate;
 in
 {
   options.estera.programs.helix = {
@@ -487,93 +572,24 @@ in
   };
 
   config = mkIf cfg.enable {
-    home-manager.users.${user} = {
-      programs.helix = {
-        enable = true;
-        themes = {
-          montrouge = theme;
-        };
-        settings = {
-          theme = "montrouge";
-          editor = {
-            completion-timeout = 5;
-            line-number = "relative";
-            file-picker.hidden = false;
-            end-of-line-diagnostics = "hint";
+    systemd.tmpfiles.rules = map ({ name, value }: "L+ /home/${user}/${name} - - - - ${value}") [
+      {
+        name = ".config/helix/themes/montrouge.toml";
+        value = toml "hx-theme" theme;
+      }
 
-            # lsp = { display-inlay-hints = true; };
+      {
+        name = ".config/helix/languages.toml";
+        value = toml "hx-lang" languages;
+      }
 
-            inline-diagnostics = {
-              cursor-line = "warning";
-              other-lines = "info";
-            };
+      {
+        name = ".config/helix/config.toml";
+        value = toml "hx-config" editorConfig;
+      }
+    ];
 
-            soft-wrap = {
-              enable = true;
-              max-wrap = 30;
-            };
-
-            statusline = {
-              right = [
-                "diagnostics"
-                "selections"
-                "register"
-                "position"
-                "file-encoding"
-                "file-type"
-              ];
-              mode = {
-                normal = "normal";
-                insert = "insert";
-                select = "select";
-              };
-            };
-          };
-
-          keys = {
-            insert = {
-              up = "no_op";
-              down = "no_op";
-              left = "no_op";
-              right = "no_op";
-              pageup = "no_op";
-              pagedown = "no_op";
-              home = "no_op";
-              end = "no_op";
-            };
-          };
-        };
-
-        languages = {
-          language-server.clangd = {
-            command = "${pkgs.clang-tools}/bin/clangd";
-          };
-
-          language-server.rust-analyzer.config = {
-            check.command = "clippy";
-            # check.allTargets = false;
-
-            inlayHints = {
-              closingBraceHints.minLines = 6;
-              bindingModeHints.enable = true;
-              parameterHints.enable = true;
-            };
-          };
-
-          language = [
-            {
-              name = "nix";
-              auto-format = true;
-              formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
-            }
-            {
-              name = "cpp";
-              auto-format = true;
-              formatter.command = "${pkgs.clang-tools}/bin/clang-format";
-            }
-          ];
-        };
-      };
-    };
+    nixpkgs.overlays = [ inputs.helix.overlays.helix ];
+    environment.systemPackages = [ pkgs.helix ];
   };
 }
