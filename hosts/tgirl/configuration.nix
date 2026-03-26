@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   ...
 }:
@@ -100,11 +99,6 @@
       wireshark.enable = true;
       zoxide.enable = true;
       fuzzel.enable = true;
-
-      xwayland = {
-        enable = true;
-        useSatellite = true;
-      };
 
       vaultwarden = {
         enable = true;
