@@ -25,6 +25,7 @@
   };
 
   boot = {
+    stage2Greeting = "";
     kernelParams = [
       "quiet"
       "loglevel=3"
@@ -45,6 +46,7 @@
     ];
 
     initrd = {
+      stage1Greeting = "";
       kernelModules = lib.mkForce [ "btrfs" ];
       availableKernelModules = [
         # "nvidia"
@@ -71,7 +73,12 @@
     # blacklistedKernelModules = [ "r8169" ];
 
     loader = {
-      limine.enable = true;
+      timeout = 0;
+      systemd-boot = {
+        enable = true;
+        editor = false;
+      };
+
       efi.canTouchEfiVariables = true;
     };
 

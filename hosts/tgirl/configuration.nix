@@ -4,16 +4,6 @@
   ...
 }:
 {
-  virtualisation.libvirtd = {
-    enable = true;
-    qemu = {
-      package = pkgs.qemu_kvm;
-      swtpm.enable = true;
-    };
-    onBoot = "ignore";
-    onShutdown = "shutdown";
-  };
-
   sops =
     let
       keyFilePath = "/home/esther/.config/sops/age/keys.txt";
@@ -60,6 +50,7 @@
 
   systemd = {
     network = {
+      wait-online.enable = false;
       enable = true;
       networks."main" = {
         matchConfig.Name = "eno1";
@@ -95,8 +86,6 @@
     isNormalUser = true;
     extraGroups = [
       "wheel"
-      "libvirtd"
-      "kvm"
     ];
     shell = pkgs.bash;
   };
