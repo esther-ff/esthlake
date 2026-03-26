@@ -25,7 +25,7 @@ in
           shell = "${pkgs.fish}/bin/fish";
         };
 
-        colors =
+        colors-dark =
           let
             inherit (colorScheme)
               bg

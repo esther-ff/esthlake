@@ -3,16 +3,11 @@
 {
   networking.wg-quick.interfaces =
     let
-      keys = {
-        priv = "/run/secrets/mullvad_private_key";
-        pub = "uUYbYGKoA6UBh1hfkAz5tAWFv4SmteYC9kWh7/K6Ah0=";
-      };
       serverIp = "92.60.40.209";
       listenPort = 51820;
-      networkToBlock = "192.168.0.0/24";
-
-      publicKey = keys.pub;
-      privateKeyFile = keys.priv;
+      networkToAllow = "192.168.0.0/24";
+      publicKey = "uUYbYGKoA6UBh1hfkAz5tAWFv4SmteYC9kWh7/K6Ah0=";
+      privateKeyFile = "/run/secrets/mullvad_private_key";
     in
     {
       wg0 = {
@@ -29,14 +24,10 @@
           # Mark packets on the wg0 interface
           wg set wg0 fwmark 51820
 
-          for ip in $(${pkgs.dig} +short mc.hypixel.net); do
-              ${pkgs.iptables}/bin/iptables -I OUTPUT 1 -d $ip -p tcp --dport 25565 -j ACCEPT
-          done
-
           # Forbid anything else which doesn't go through wireguard VPN on
           # ipV4 and ipV6
           ${pkgs.iptables}/bin/iptables -A OUTPUT \
-            ! -d ${networkToBlock} \
+            ! -d ${networkToAllow} \
             ! -o wg0 \
             -m mark ! --mark $(wg show wg0 fwmark) \
             -m addrtype ! --dst-type LOCAL \
@@ -62,6 +53,7 @@
         #     -m addrtype ! --dst-type LOCAL \
         #     -j REJECT
         # '';
+
         peers = [
           {
             inherit publicKey;

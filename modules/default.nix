@@ -13,6 +13,5 @@ _: {
     ./xdg-portal.nix
     ./system.nix
     ./wireshark.nix
-    ./xwayland.nix
   ];
 }

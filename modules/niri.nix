@@ -7,7 +7,6 @@
 }:
 let
   cfg = config.estera.programs.niri;
-  cfgXwayland = config.estera.programs.xwayland.useSatellite;
   cfgFoot = config.estera.programs.foot.enable;
 
   inherit (lib.options) mkEnableOption mkOption;
@@ -42,8 +41,8 @@ let
         "${pathToWallpaper}"
       ]
       [ "ironbar" ]
+      [ "xwayland-satellite" ]
     ]
-    ++ lib.optional cfgXwayland [ "xwayland-satellite" ]
     ++ lib.optional cfgFoot [
       "foot"
       "--server"
@@ -202,6 +201,12 @@ in
       environment.variables = {
         NIRI_CONFIG = "${builtNiriConfig}";
       };
+
+      programs.xwayland = {
+        enable = true;
+      };
+
+      environment.systemPackages = [ pkgs.xwayland-satellite ];
     }
   );
 }
