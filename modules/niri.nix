@@ -104,10 +104,7 @@ let
         "Alt+L" = spawn "swaylock";
         "Alt+F" = spawn "zen";
         "Alt+C" = close-window;
-        "Alt+S" = {
-          screenshot = [ ];
-        };
-
+        "Alt+S".screenshot = [ ];
         "Alt+Shift+W" = move-window-up;
         "Alt+Shift+S" = move-window-down;
 
@@ -188,14 +185,17 @@ in
         package = pkgs.niri-unstable;
       };
 
-      programs.bash = lib.modules.mkIf cfg.autostart {
-        enable = true;
-        loginShellInit = ''
+      environment.etc.profile = lib.modules.mkIf cfg.autostart {
+        text = ''
           if [ "$XDG_VTNR" -eq 1 ] && [ -z "$WAYLAND_DISPLAY" ] && [[ $(tty) = "/dev/tty1" ]]; then
-              echo "launching niri"
-              niri-session &
+              SHELL=${pkgs.bash} niri-session -l
+              exit
           fi
         '';
+      };
+
+      programs.bash = lib.modules.mkIf cfg.autostart {
+        enable = true;
       };
 
       environment.variables = {

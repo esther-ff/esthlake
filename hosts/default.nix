@@ -7,7 +7,6 @@
   ...
 }:
 let
-  inherit (inputs) self;
   inherit (lib) nixosSystem map listToAttrs;
   sysConfigDir = dir: import (lib.path.append dir "system.nix") { inherit inputs; };
 
@@ -23,7 +22,7 @@ let
         niri-nix.nixosModules.default
         (import ../overlays)
       ];
-      specialArgs = { inherit inputs lib self; };
+      specialArgs = { inherit inputs lib; };
     };
 
   allHosts =
