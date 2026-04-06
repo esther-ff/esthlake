@@ -8,7 +8,13 @@ let
   inherit (lib)
     types
     isString
+    mapAttrsToList
+    mapAttrs
+    filterAttrs
     ;
+
+  inherit (builtins) isNull;
+  inherit (pkgs) writeText;
   inherit (lib.options) mkEnableOption mkOption;
 
   fileSubmodule.options = {
@@ -16,12 +22,18 @@ let
       description = "content of the file";
       type =
         with types;
-        oneOf [
+        nullOr (oneOf [
           str
           package
           path
-        ];
-      default = "";
+        ]);
+      default = null;
+    };
+
+    link = mkOption {
+      description = "symlink to a file";
+      type = with types; nullOr str;
+      default = null;
     };
   };
 
@@ -49,25 +61,41 @@ in
   options.estera.village = {
     home = mkOption {
       description = "user-specific settings";
-      type = types.attrsOf (types.submodule homeSubmodule);
+      type = with types; attrsOf (submodule homeSubmodule);
       default = { };
     };
   };
 
   config =
     let
-      enabled = lib.filterAttrs (_: user: user.enable) config.estera.village.home;
-      toRule =
-        home: name: value:
-        let
-          path = if isString value then pkgs.writeText name value else value;
-        in
-        "L+ ${home}/${name} - - - - ${path}";
+      enabled = filterAttrs (_: user: user.enable) config.estera.village.home;
 
     in
     {
-      systemd.user.tmpfiles.users = lib.mapAttrs (_: user: {
-        rules = lib.mapAttrsToList (name: value: toRule user.homeDirectory name value.content) user.files;
-      }) enabled;
+      systemd.user.tmpfiles.users = mapAttrs (
+        _: user:
+        let
+          toRuleSimple = name: path: "L+ ${user.homeDirectory}/${name} - - - - ${path}";
+
+          toRule =
+            name: value:
+            let
+              path = if isString value then writeText name value else value;
+            in
+            toRuleSimple name path;
+
+          fileOrLink =
+            name: value:
+            if !(isNull value.link) then
+              toRuleSimple name value.link
+            else if !(isNull value.content) then
+              toRule name value.content
+            else
+              "";
+        in
+        {
+          rules = mapAttrsToList fileOrLink user.files;
+        }
+      ) enabled;
     };
 }

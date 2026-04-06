@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   ...
 }:
@@ -15,6 +16,9 @@
         bigeon_discord_token = { };
         admin_token_env = { };
         user_password = { };
+        ssh_private_key = {
+          owner = config.estera.flake.system.user;
+        };
       };
     };
 
@@ -33,7 +37,7 @@
       Host codeberg.org
           HostName codeberg.org
           User git
-          IdentityFile ~/.ssh/id_ed25519_codeberg
+          IdentityFile /run/secrets/ssh_private_key
     '';
 
     bigeon = {
@@ -95,6 +99,8 @@
         enable = true;
         name = "esther";
         homeDirectory = "/home/esther";
+
+        files.".ssh/id_ed25519".link = "/run/secrets/ssh_private_key";
       };
     };
 

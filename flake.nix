@@ -66,6 +66,8 @@
             buildInputs = with pkgs; [
               nixfmt
               nil
+              sops
+              age
             ];
           };
         }
