@@ -10,11 +10,9 @@ let
   cfgFoot = config.estera.programs.foot.enable;
 
   inherit (lib.options) mkEnableOption mkOption;
-  inherit (lib) types attrNames;
+  inherit (lib) types;
   inherit (inputs.niri-nix.lib) validatedConfigFor mkNiriKDL;
   inherit (inputs.niri-nix.packages.${pkgs.stdenv.hostPlatform.system}) niri-unstable;
-
-  pathToWallpaper = "${cfg.wallpaperSource}/${cfg.wallpaper}";
 
   niriConfig = {
     input.keyboard = {
@@ -38,7 +36,7 @@ let
       [
         "swaybg"
         "-i"
-        "${pathToWallpaper}"
+        "${cfg.wallpaper}"
       ]
       [ "ironbar" ]
       [ "xwayland-satellite" ]
@@ -136,16 +134,10 @@ in
   options.estera.programs.niri = {
     enable = mkEnableOption "niri";
 
-    wallpaperSource = mkOption {
-      description = "directory containing wallpapers";
-      type = types.path;
-      default = ../assets/wallpapers;
-    };
-
     wallpaper = mkOption {
       description = "file name of the wallpaper image located in assets/wallpapers/";
-      type = types.enum (attrNames (builtins.readDir cfg.wallpaperSource));
-      default = null;
+      type = types.path;
+      default = ../assets/wallpapers/kibty0.png;
     };
 
     screenshotPath = mkOption {
@@ -206,7 +198,10 @@ in
         enable = true;
       };
 
-      environment.systemPackages = [ pkgs.xwayland-satellite ];
+      environment.systemPackages = with pkgs; [
+        xwayland-satellite
+        swaybg
+      ];
     }
   );
 }

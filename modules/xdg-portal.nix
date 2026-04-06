@@ -14,6 +14,11 @@ in
   };
 
   config = lib.modules.mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      xdg-desktop-portal-gnome
+      xdg-desktop-portal-gtk
+    ];
+
     xdg = {
       portal = {
         enable = true;

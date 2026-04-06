@@ -3,7 +3,7 @@ with pkgs;
 {
   environment.systemPackages = [
     fzf
-    htop
+    btop
     element-desktop
     file
     dunst
@@ -18,22 +18,17 @@ with pkgs;
     libreoffice
     openjdk
     prismlauncher
-    xwayland-satellite
-    xdg-desktop-portal
-    xdg-desktop-portal-gtk
     wireshark
     cargo-mommy
-    swaybg
     obsidian
     git
     pipewire
-    helix
     ntfs3g
     pavucontrol
     kdePackages.okular
     ironbar
     zen-browser
-    sxiv
+    imv
     yazi
   ];
 }

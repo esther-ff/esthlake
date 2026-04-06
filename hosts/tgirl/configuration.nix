@@ -1,27 +1,8 @@
 {
-  config,
   pkgs,
   ...
 }:
 {
-  sops =
-    let
-      keyFilePath = "/home/esther/.config/sops/age/keys.txt";
-    in
-    {
-      age.keyFile = keyFilePath;
-      defaultSopsFile = ../../secrets.yaml;
-      secrets = {
-        mullvad_private_key = { };
-        bigeon_discord_token = { };
-        admin_token_env = { };
-        user_password = { };
-        ssh_private_key = {
-          owner = config.estera.flake.system.user;
-        };
-      };
-    };
-
   security = {
     polkit.enable = true;
     pam.services.swaylock.enable = true;
@@ -92,11 +73,10 @@
         enable = true;
         name = "esther";
         homeDirectory = "/home/esther";
-
-        files.".ssh/id_ed25519".link = "/run/secrets/ssh_private_key";
       };
     };
 
+    secrets.enable = true;
     programs = {
       foot.enable = true;
       fish.enable = true;
@@ -115,8 +95,6 @@
       niri = {
         enable = true;
         autostart = true;
-        wallpaper = "kibty0.png";
-        wallpaperSource = ../../assets/wallpapers;
         screenshotPath = "/data/screenshoty";
       };
     };

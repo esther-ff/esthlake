@@ -1,6 +1,7 @@
 _: {
   imports = [
     ./home.nix
+    ./secrets.nix
     ./vaultwarden.nix
     ./espanso.nix
     ./zoxide.nix
