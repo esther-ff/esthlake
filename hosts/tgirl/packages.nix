@@ -22,9 +22,7 @@ with pkgs;
     cargo-mommy
     obsidian
     git
-    pipewire
     ntfs3g
-    pavucontrol
     kdePackages.okular
     ironbar
     zen-browser

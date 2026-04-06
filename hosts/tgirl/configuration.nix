@@ -43,18 +43,14 @@
         layout = "pl";
         options = "eurosign:e,caps:escape";
       };
+
       displayManager = {
         lightdm.enable = false;
         startx.enable = false;
       };
     };
 
-    pipewire = {
-      enable = true;
-      pulse.enable = true;
-      wireplumber.enable = true;
-    };
-
+    getty.greetingLine = "";
     openssh.enable = true;
   };
 
@@ -77,6 +73,8 @@
     };
 
     secrets.enable = true;
+    sound.enable = true;
+
     programs = {
       foot.enable = true;
       fish.enable = true;

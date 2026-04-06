@@ -1,5 +1,6 @@
 _: {
   imports = [
+    ./sound.nix
     ./home.nix
     ./secrets.nix
     ./vaultwarden.nix

@@ -24,6 +24,6 @@ in
       };
     };
 
-    estera.village.home.esther.files.".ssh/id_ed25519".link = "/run/secrets/ssh_private_key";
+    estera.village.home.${user}.files.".ssh/id_ed25519".link = "/run/secrets/ssh_private_key";
   };
 }

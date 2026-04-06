@@ -14,9 +14,7 @@ let
 in
 {
   options.estera.programs.fuzzel.enable = mkEnableOption "fuzzel";
-
   config =
-
     let
       iniConfig =
         toINI
@@ -26,7 +24,6 @@ in
             } "=";
           }
           {
-
             main = {
               font = "MonaspiceNe NF:size=13";
               use-bold = true;
