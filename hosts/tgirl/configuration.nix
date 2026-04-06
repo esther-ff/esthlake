@@ -33,13 +33,6 @@
       enableSSHSupport = true;
     };
 
-    ssh.extraConfig = ''
-      Host codeberg.org
-          HostName codeberg.org
-          User git
-          IdentityFile /run/secrets/ssh_private_key
-    '';
-
     bigeon = {
       enable = true;
       botToken = "/run/secrets/bigeon_discord_token";
