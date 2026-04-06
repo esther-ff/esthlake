@@ -95,11 +95,8 @@
         enable = true;
         name = "esther";
         homeDirectory = "/home/esther";
-        files.meower.content = "hehe";
       };
     };
-
-    village.home.esther.files."barker".content = "hihi";
 
     programs = {
       foot.enable = true;

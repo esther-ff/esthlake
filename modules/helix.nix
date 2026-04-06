@@ -572,23 +572,11 @@ in
   };
 
   config = mkIf cfg.enable {
-    # TERRIBLE!
-    systemd.tmpfiles.rules = map ({ name, value }: "L+ /home/${user}/${name} - - - - ${value}") [
-      {
-        name = ".config/helix/themes/montrouge.toml";
-        value = toml "hx-theme" theme;
-      }
-
-      {
-        name = ".config/helix/languages.toml";
-        value = toml "hx-lang" languages;
-      }
-
-      {
-        name = ".config/helix/config.toml";
-        value = toml "hx-config" editorConfig;
-      }
-    ];
+    estera.village.home.${user}.files = {
+      ".config/helix/themes/montrouge.toml".content = toml "montrouge.toml" theme;
+      ".config/helix/languages.toml".content = toml "languages.toml" languages;
+      ".config/helix/config.toml".content = toml "config.toml" editorConfig;
+    };
 
     nixpkgs.overlays = [ inputs.helix.overlays.helix ];
     environment.systemPackages = [ pkgs.helix ];
