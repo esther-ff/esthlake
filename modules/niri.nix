@@ -137,7 +137,7 @@ in
     wallpaper = mkOption {
       description = "file name of the wallpaper image located in assets/wallpapers/";
       type = types.path;
-      default = ../assets/wallpapers/kibty0.png;
+      default = ../assets/wallpapers/flamingo.png;
     };
 
     screenshotPath = mkOption {
@@ -154,9 +154,7 @@ in
 
   config = lib.modules.mkIf cfg.enable (
     let
-      builtNiriConfig = pkgs.writeText "niri-config.kdl" (
-        validatedConfigFor niri-unstable (mkNiriKDL niriConfig)
-      );
+      builtNiriConfig = (validatedConfigFor niri-unstable (mkNiriKDL niriConfig));
     in
     {
       assertions = [
@@ -174,7 +172,7 @@ in
 
       programs.niri = {
         enable = true;
-        package = pkgs.niri-unstable;
+        # package = pkgs.niri-unstable;
       };
 
       environment.etc.profile = lib.modules.mkIf cfg.autostart {
@@ -194,7 +192,7 @@ in
         NIRI_CONFIG = "${builtNiriConfig}";
         NIXOS_OZONE_WL = "1";
         ELECTRON_OZONE_PLATFORM_HINT = "wayland";
-        XDG_SESSION_DESKTOP = "niri";
+        # XDG_SESSION_DESKTOP = "niri";
         MOZ_ENABLE_WAYLAND = "1";
         XDG_SESSION_TYPE = "wayland";
       };
@@ -202,7 +200,7 @@ in
       programs.xwayland = {
         enable = true;
       };
-
+      systemd.packages = [ pkgs.xdg-desktop-portal-gnome ];
       environment.systemPackages = with pkgs; [
         xwayland-satellite
         swaybg

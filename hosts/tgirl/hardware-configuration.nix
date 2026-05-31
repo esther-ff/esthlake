@@ -35,7 +35,7 @@
       "btrfs"
       "vfat"
     ];
-    kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
+    kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-x86_64-v3;
     kernelModules = lib.mkForce [
       "kvm-amd"
       "nvidia"
@@ -49,10 +49,6 @@
       stage1Greeting = "";
       kernelModules = lib.mkForce [ "btrfs" ];
       availableKernelModules = [
-        # "nvidia"
-        # "nvidia_modeset"
-        # "nvidia_drm"
-        # "nvidia_uvm"
         "xhci_pci"
         "ahci"
         "nvme"

@@ -16,7 +16,7 @@ in
   config = lib.modules.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       gnome-session
-      nautilus
+      # nautilus
     ];
     xdg = {
       portal = {
@@ -31,7 +31,7 @@ in
             "gtk"
             "gnome"
           ];
-          "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+          # "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
         };
       };
     };

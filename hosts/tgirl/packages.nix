@@ -7,7 +7,6 @@ with pkgs;
     element-desktop
     file
     dunst
-    bottles
     swaylock
     just
     python3
@@ -15,7 +14,7 @@ with pkgs;
     man-pages
     thunderbird
     signal-desktop
-    libreoffice
+    libreoffice-fresh
     openjdk
     prismlauncher
     wireshark

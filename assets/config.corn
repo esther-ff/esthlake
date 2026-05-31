@@ -7,6 +7,12 @@ let {
       format = "{icon} {percentage}%"
       max_volume = 100
       truncate = "end"
+      sink_slider_orientation = "vertical"
+      truncate = {
+        mode = "end"
+        length = 15
+        max_length = 30
+      }
       icons.volume_high = "󰕾"
       icons.volume_medium = "󰖀"
       icons.volume_low = "󰕿"
@@ -24,5 +30,5 @@ let {
 
     start = [ $workspaces ]
     center = [ ]
-    end = [ $volume $sys_info $tray $clock ]
+    end = [ $tray $volume $sys_info $clock ]
 }

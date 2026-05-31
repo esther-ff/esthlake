@@ -579,6 +579,13 @@ in
     };
 
     nixpkgs.overlays = [ inputs.helix.overlays.helix ];
-    environment.systemPackages = [ pkgs.helix ];
+    environment = {
+      sessionVariables = {
+        EDITOR = "hx";
+        VISUAL = "hx";
+      };
+
+      systemPackages = [ pkgs.helix ];
+    };
   };
 }
