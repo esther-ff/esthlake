@@ -95,12 +95,12 @@
 
     secrets.enable = true;
     sound.enable = true;
+    vpn.enable = true;
 
     programs = {
       foot.enable = true;
       fish.enable = true;
       steam.enable = true;
-      # xdg-portal.enable = true;
       helix.enable = true;
       wireshark.enable = true;
       zoxide.enable = true;
