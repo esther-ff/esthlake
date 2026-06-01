@@ -35,4 +35,4 @@ let
     );
 
 in
-allHosts [ ./tgirl ]
+allHosts [ ./tgirl ./pannekoek ]

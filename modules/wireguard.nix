@@ -1,67 +1,74 @@
-{ pkgs, ... }:
-
 {
-  networking.wg-quick.interfaces =
-    let
-      serverIp = "92.60.40.209";
-      listenPort = 51820;
-      networkToAllow = "192.168.0.0/24";
-      publicKey = "uUYbYGKoA6UBh1hfkAz5tAWFv4SmteYC9kWh7/K6Ah0=";
-      privateKeyFile = "/run/secrets/mullvad_private_key";
-    in
-    {
-      wg0 = {
-        address = [
-          "10.72.48.149/32"
-          "fc00:bbbb:bbbb:bb01::9:3094/128"
-        ];
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+{
+  options.estera.vpn.enable = lib.options.mkEnableOption "vpn";
+  config = lib.modules.mkIf config.estera.vpn.enable {
+    networking.wg-quick.interfaces =
+      let
+        serverIp = "92.60.40.209";
+        listenPort = 51820;
+        networkToAllow = "192.168.0.0/24";
+        publicKey = "uUYbYGKoA6UBh1hfkAz5tAWFv4SmteYC9kWh7/K6Ah0=";
+        privateKeyFile = "/run/secrets/mullvad_private_key";
+      in
+      {
+        wg0 = {
+          address = [
+            "10.72.48.149/32"
+            "fc00:bbbb:bbbb:bb01::9:3094/128"
+          ];
 
-        dns = [ "10.64.0.1" ];
-        inherit listenPort;
-        inherit privateKeyFile;
+          dns = [ "10.64.0.1" ];
+          inherit listenPort;
+          inherit privateKeyFile;
 
-        postUp = ''
-          # Mark packets on the wg0 interface
-          wg set wg0 fwmark 51820
+          postUp = ''
+            # Mark packets on the wg0 interface
+            wg set wg0 fwmark 51820
 
-          # Forbid anything else which doesn't go through wireguard VPN on
-          # ipV4 and ipV6
-          ${pkgs.iptables}/bin/iptables -A OUTPUT \
-            ! -d ${networkToAllow} \
-            ! -o wg0 \
-            -m mark ! --mark $(wg show wg0 fwmark) \
-            -m addrtype ! --dst-type LOCAL \
-            -j REJECT
+            # Forbid anything else which doesn't go through wireguard VPN on
+            # ipV4 and ipV6
+            ${pkgs.iptables}/bin/iptables -A OUTPUT \
+              ! -d ${networkToAllow} \
+              ! -o wg0 \
+              -m mark ! --mark $(wg show wg0 fwmark) \
+              -m addrtype ! --dst-type LOCAL \
+              -j REJECT
 
-          ${pkgs.iptables}/bin/ip6tables -A OUTPUT \
-            ! -o wg0 \
-            -m mark ! --mark $(wg show wg0 fwmark) \
-            -m addrtype ! --dst-type LOCAL \
-            -j REJECT
-        '';
+            ${pkgs.iptables}/bin/ip6tables -A OUTPUT \
+              ! -o wg0 \
+              -m mark ! --mark $(wg show wg0 fwmark) \
+              -m addrtype ! --dst-type LOCAL \
+              -j REJECT
+          '';
 
-        postDown = "";
-        # postDown = ''
-        #   ${pkgs.iptables}/bin/iptables -D OUTPUT \
-        #     ! -o wg0 \
-        #     -m mark ! --mark $(wg show wg0 fwmark) \
-        #     -m addrtype ! --dst-type LOCAL \
-        #     -j REJECT
-        #   ${pkgs.iptables}/bin/ip6tables -D OUTPUT \
-        #     ! -o wg0 -m mark \
-        #     ! --mark $(wg show wg0 fwmark) \
-        #     -m addrtype ! --dst-type LOCAL \
-        #     -j REJECT
-        # '';
+          postDown = "";
+          # postDown = ''
+          #   ${pkgs.iptables}/bin/iptables -D OUTPUT \
+          #     ! -o wg0 \
+          #     -m mark ! --mark $(wg show wg0 fwmark) \
+          #     -m addrtype ! --dst-type LOCAL \
+          #     -j REJECT
+          #   ${pkgs.iptables}/bin/ip6tables -D OUTPUT \
+          #     ! -o wg0 -m mark \
+          #     ! --mark $(wg show wg0 fwmark) \
+          #     -m addrtype ! --dst-type LOCAL \
+          #     -j REJECT
+          # '';
 
-        peers = [
-          {
-            inherit publicKey;
-            allowedIPs = [ "0.0.0.0/0" ];
-            endpoint = "${serverIp}:${toString listenPort}";
-            persistentKeepalive = 25;
-          }
-        ];
+          peers = [
+            {
+              inherit publicKey;
+              allowedIPs = [ "0.0.0.0/0" ];
+              endpoint = "${serverIp}:${toString listenPort}";
+              persistentKeepalive = 25;
+            }
+          ];
+        };
       };
-    };
+  };
 }

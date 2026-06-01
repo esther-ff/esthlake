@@ -24,7 +24,7 @@
             src = pkgs.fetchFromGitHub {
               owner = "JakeStanger";
               repo = "ironbar";
-              hash = "sha256-29hz37Qxc+Zt/4hDAbR7T+0eieHA65iH3++VvuIRUCs=";
+              hash = "sha256-PPfz05Tk5aP5sZM3Zx4SBK9lWmBamUBE2mjk32uOjCc=";
               rev = "master";
             };
             release = true;
