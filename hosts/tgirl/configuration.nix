@@ -114,7 +114,7 @@
       niri = {
         enable = true;
         autostart = true;
-        wallpaper = ../../assets/pastelWaves.jpg;
+        wallpaper = ../../assets/wallpapers/wandererAboveFog.jpg;
         screenshotPath = "/data/screenshoty";
       };
     };
