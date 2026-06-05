@@ -21,6 +21,7 @@ in
         ssh_private_key = {
           owner = user;
         };
+        searxng_secret_key = { };
       };
     };
 

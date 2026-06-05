@@ -4,10 +4,9 @@
 }:
 {
   console.enable = false;
-  security = {
-    polkit.enable = true;
-    pam.services.swaylock.enable = true;
-  };
+  # security = {
+  #   polkit.enable = true;
+  # };
 
   programs = {
     gnupg.agent = {
@@ -64,6 +63,7 @@
     sound.enable = true;
 
     programs = {
+      searxng.enable = true;
       fish.enable = true;
       helix.enable = true;
       wireshark.enable = true;

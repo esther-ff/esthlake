@@ -1,5 +1,6 @@
 _: {
   imports = [
+    ./searxng.nix
     ./sound.nix
     ./home.nix
     ./secrets.nix
