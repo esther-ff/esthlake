@@ -3,10 +3,7 @@
   ...
 }:
 {
-  console.enable = false;
-  # security = {
-  #   polkit.enable = true;
-  # };
+  # console.enable = false;
 
   programs = {
     gnupg.agent = {
@@ -25,16 +22,16 @@
     };
   };
 
-  systemd = {
-    network = {
-      wait-online.enable = false;
-      enable = true;
-      networks."main" = {
-        matchConfig.Name = "enp0s25";
-        networkConfig.DHCP = "ipv4";
-      };
-    };
-  };
+  # systemd = {
+  #   network = {
+  #     wait-online.enable = false;
+  #     enable = true;
+  #     networks."main" = {
+  #       matchConfig.Name = "enp0s25";
+  #       networkConfig.DHCP = "ipv4";
+  #     };
+  #   };
+  # };
 
   services = {
     openssh.enable = true;
@@ -45,7 +42,6 @@
     isNormalUser = true;
     extraGroups = [
       "wheel"
-      "kvm"
     ];
     shell = pkgs.bash;
   };
@@ -60,10 +56,12 @@
     };
 
     secrets.enable = true;
-    sound.enable = true;
 
     programs = {
-      searxng.enable = true;
+      searxng = {
+        enable = true;
+        ip = "192.168.0.200";
+      };
       fish.enable = true;
       helix.enable = true;
       wireshark.enable = true;

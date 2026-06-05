@@ -1,5 +1,6 @@
 _: {
   imports = [
+    ./networking.nix
     ./fonts.nix
     ./configuration.nix
     ./hardware-configuration.nix
