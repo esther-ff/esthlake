@@ -56,6 +56,8 @@
               "privacy.trackingprotection.emailtracking.enabled" = true;
               "privacy.trackingprotection.enabled" = true;
               "privacy.trackingprotection.socialtracking.enabled" = true;
+              "privacy.exposeContentTitleInWindow" = false;
+              "privacy.exposeContentTitleInWindow.pbm" = false;
               "security.block_fileuri_script_with_wrong_mime" = true;
               "browser.translations.automaticallyPopup" = true;
             };

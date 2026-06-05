@@ -26,9 +26,9 @@ let {
     }
 } in {
     position = "bottom"
-    height = 10
+    height = 20
 
-    start = [ $workspaces ]
-    center = [ ]
+    start = [ $workspaces $focused ]
+    center = [  ]
     end = [ $tray $volume $sys_info $clock ]
 }
